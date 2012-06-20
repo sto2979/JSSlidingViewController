@@ -7,7 +7,7 @@ by Jared Sinclair  -  http://www.jaredsinclair.com
 What is JSSlidingViewController ?
 =================================
 
-JSSlidingViewController is a easy way to add "slide-to-reveal" style navigation to an iPhone or iPod Touch app. This is similar to the kind of navigation found in Facebook.app, Path.app, and many others. It's a subclass of UIViewController that uses the view controller containment methods available in iOS 5.0 or later. 
+JSSlidingViewController is an easy way to add "slide-to-reveal" style navigation to an iPhone or iPod Touch app. This is similar to the kind of navigation found in Facebook.app, Path.app, and many others. It's a subclass of UIViewController that uses the view controller containment methods available in iOS 5.0 or later. 
 
 
 
