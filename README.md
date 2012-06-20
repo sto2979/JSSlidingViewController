@@ -15,7 +15,7 @@ JSSlidingViewController is an easy way to add "slide-to-reveal" style navigation
 What's so Great About JSSlidingViewController ?
 ===============================================
 
-Unlike other attempts at "slide-to-reveal" navigation, JSSlidingViewController uses a UIScrollView to track touches. Other solutions track touches manually, which results in jaggy scrolling, unexpected behaviors, and poor flick-open/flick-closed behavior. This makes JSSlidingViewController super easy to implement. 
+Unlike other attempts at "slide-to-reveal" navigation, JSSlidingViewController uses a UIScrollView to track touches. Other solutions track touches manually, which results in jaggy scrolling, unexpected behaviors, and poor flick-open/flick-closed behavior. JSSlidingViewController is much more responsive. It uses Apple's great work with scroll views to track touches closely, update views quickly, and recognize gestures more accurately. 
 
 
 
