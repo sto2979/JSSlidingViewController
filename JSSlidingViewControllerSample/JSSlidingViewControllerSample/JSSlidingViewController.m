@@ -321,7 +321,7 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {  
-    if (_isOpen == YES) {
+    if (_isOpen == YES && _locked == NO) {
         CGRect rect = _slidingScrollView.frame;
         rect.origin.x = 0;
         _slidingScrollView.frame = rect;
@@ -335,7 +335,7 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    if (_isOpen == YES) {
+    if (_isOpen == YES && _locked == NO) {
         CGRect rect = _slidingScrollView.frame;
         rect.origin.x = 0;
         _slidingScrollView.frame = rect;
@@ -348,10 +348,10 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {   
-    if (_isOpen == YES) {
-        if (self.invisibleCloseSliderButton == nil)
+    if (_isOpen == YES && _locked == NO) {
+        if (self.invisibleCloseSliderButton == nil) {
             [self addInvisibleButton];
-        
+        }
         CGRect rect = _slidingScrollView.frame;
         rect.origin.x = _sliderOpeningWidth;
         _slidingScrollView.frame = rect;
@@ -395,11 +395,18 @@
 }
 
 - (void)invisibleButtonPressed {
-    [self closeSlider:YES completion:nil];
+    if (_locked == NO) {
+        [self closeSlider:YES completion:nil];
+    }
 }
 
 - (void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:(CGFloat)width {
     _sliderOpeningWidth = self.view.frame.size.width - width;
+}
+
+- (void)setLocked:(BOOL)locked {
+    _locked = locked;
+    _slidingScrollView.scrollEnabled = !_locked;
 }
 
 @end
