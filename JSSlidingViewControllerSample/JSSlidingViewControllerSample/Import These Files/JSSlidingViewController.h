@@ -22,6 +22,7 @@
 @property (nonatomic, readonly) UIViewController *frontViewController;
 @property (nonatomic, readonly) UIViewController *backViewController;
 @property (nonatomic, weak) id <JSSlidingViewControllerDelegate> delegate;
+@property (nonatomic, assign) BOOL allowManualSliding;
 
 - (id)initWithFrontViewController:(UIViewController *)frontVC backViewController:(UIViewController *)backVC;
 - (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0);

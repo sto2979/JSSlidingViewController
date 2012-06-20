@@ -47,7 +47,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"Front View C.";
+    self.navigationItem.title = @"Front View Controller";
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Front" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
     UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [customButton setBackgroundImage:[UIImage imageNamed:@"navigationBar_menuButton_normal.png"] forState:UIControlStateNormal];
     [customButton setBackgroundImage:[UIImage imageNamed:@"navigationBar_menuButton_highlighted.png"] forState:UIControlStateHighlighted];
@@ -55,6 +56,10 @@
     [customButton addTarget:self action:@selector(menuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"texture_creamPaper.png"]];
+}
+
+- (void)backButtonPressed {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)menuButtonPressed:(id)sender {
@@ -95,6 +100,8 @@
     UITableViewCell *cell = [self.myTableView dequeueReusableCellWithIdentifier:@"dualLabelCell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"dualLabelCell"];
+        cell.backgroundView = [[UIView alloc] init];
+        cell.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"texture_creamPaper.png"]];
     }
     cell.textLabel.text = [NSString stringWithFormat:@"Detail Row %i", indexPath.row + 1];
     return cell;

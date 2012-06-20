@@ -66,6 +66,7 @@
 @synthesize invisibleCloseSliderButton = _invisibleCloseSliderButton;
 @synthesize delegate;
 @synthesize sliderOpeningWidth = _sliderOpeningWidth;
+@synthesize allowManualSliding = _allowManualSliding;
 
 #define kDefaultVisiblePortion 58.0f
 
@@ -380,9 +381,14 @@
     _locked = NO;
     _animating = NO;
     _frontViewControllerHasOpenCloseNavigationBarButton = YES;
+    _allowManualSliding = YES;
     UIImageView *frontViewControllerDropShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"frontViewControllerDropShadow.png"]];
     frontViewControllerDropShadow.frame = CGRectMake(_sliderOpeningWidth - 20.0f, 0.0f, 20.0f, _slidingScrollView.bounds.size.height);
     [_slidingScrollView addSubview:frontViewControllerDropShadow];
+    UIImageView *frontViewControllerDropShadow_right = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"frontViewControllerDropShadow.png"]];
+    frontViewControllerDropShadow_right.frame = CGRectMake(_sliderOpeningWidth + frame.size.width, 0.0f, 20.0f, _slidingScrollView.bounds.size.height);
+    frontViewControllerDropShadow_right.transform = CGAffineTransformMakeRotation(M_PI);
+    [_slidingScrollView addSubview:frontViewControllerDropShadow_right];
 }
 
 #pragma mark - Convenience
@@ -412,7 +418,16 @@
 
 - (void)setLocked:(BOOL)locked {
     _locked = locked;
-    _slidingScrollView.scrollEnabled = !_locked;
+    if (_allowManualSliding && locked == NO) {
+        _slidingScrollView.scrollEnabled = YES;
+    } else {
+        _slidingScrollView.scrollEnabled = NO;
+    }
+}
+
+- (void)setAllowManualSliding:(BOOL)allowManualSliding {
+    _allowManualSliding = allowManualSliding;
+    _slidingScrollView.scrollEnabled = allowManualSliding;
 }
 
 @end

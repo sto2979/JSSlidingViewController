@@ -35,13 +35,13 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUILabel" id="977402819">
+					<object class="IBUILabel" id="1020779984">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 75}, {280, 89}}</string>
+						<string key="NSFrame">{{20, 37}, {280, 89}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="505432839"/>
+						<reference key="NSNextKeyView" ref="1046396909"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -51,7 +51,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">You can lock the slider by setting the "locked" property of JSSlidingViewController.</string>
-						<object class="NSColor" key="IBUITextColor" id="891858280">
+						<object class="NSColor" key="IBUITextColor" id="790275915">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
 						</object>
@@ -61,20 +61,20 @@
 						<int key="IBUINumberOfLines">10</int>
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="155911322">
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="173445074">
 							<int key="type">1</int>
 							<double key="pointSize">17</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="235345019">
+						<object class="NSFont" key="IBUIFont" id="429939600">
 							<string key="NSName">Helvetica</string>
 							<double key="NSSize">17</double>
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUILabel" id="505432839">
+					<object class="IBUILabel" id="1045848740">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 198}, {280, 89}}</string>
+						<string key="NSFrame">{{20, 284}, {280, 89}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -87,21 +87,47 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">The slider will not lock or unlock automatically. You must set the "locked" property manually.</string>
-						<reference key="IBUITextColor" ref="891858280"/>
+						<reference key="IBUITextColor" ref="790275915"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUINumberOfLines">10</int>
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
-						<reference key="IBUIFontDescription" ref="155911322"/>
-						<reference key="IBUIFont" ref="235345019"/>
+						<reference key="IBUIFontDescription" ref="173445074"/>
+						<reference key="IBUIFont" ref="429939600"/>
+					</object>
+					<object class="IBUILabel" id="1046396909">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{20, 163}, {280, 89}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="1045848740"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<float key="IBUIAlpha">0.60000002384185791</float>
+						<int key="IBUIContentMode">7</int>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<string key="IBUIText">For example, the slider in this app is locked when this detail view is displayed.</string>
+						<reference key="IBUITextColor" ref="790275915"/>
+						<nil key="IBUIHighlightedColor"/>
+						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">10</float>
+						<int key="IBUINumberOfLines">10</int>
+						<int key="IBUITextAlignment">1</int>
+						<int key="IBUILineBreakMode">0</int>
+						<reference key="IBUIFontDescription" ref="173445074"/>
+						<reference key="IBUIFont" ref="429939600"/>
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="977402819"/>
+				<reference key="NSNextKeyView" ref="1020779984"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC45ODc0ODQwNTYxIDAuOTY1MDQxMjM2NyAwLjk2NTA0MTIzNjcAA</bytes>
@@ -136,8 +162,9 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="977402819"/>
-							<reference ref="505432839"/>
+							<reference ref="1020779984"/>
+							<reference ref="1045848740"/>
+							<reference ref="1046396909"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -154,12 +181,17 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
-						<reference key="object" ref="977402819"/>
+						<reference key="object" ref="1020779984"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">6</int>
-						<reference key="object" ref="505432839"/>
+						<reference key="object" ref="1045848740"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">7</int>
+						<reference key="object" ref="1046396909"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>
@@ -172,12 +204,13 @@
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6</int>
+			<int key="maxID">7</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
