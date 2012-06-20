@@ -46,6 +46,8 @@
     self.backVC = [[BackViewController alloc] initWithNibName:@"BackViewController" bundle:nil];
     
     self.viewController = [[JSSlidingViewController alloc] initWithFrontViewController:navCont backViewController:self.backVC];
+    self.viewController.delegate = self;
+    
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

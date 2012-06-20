@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "FrontViewController.h"
+#import "JSSlidingViewController.h"
 
-@class JSSlidingViewController, BackViewController;
+@class BackViewController;
 
-@interface JSAppDelegate : UIResponder <UIApplicationDelegate, MenuButtonDelegate>
+@interface JSAppDelegate : UIResponder <UIApplicationDelegate, MenuButtonDelegate, JSSlidingViewControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

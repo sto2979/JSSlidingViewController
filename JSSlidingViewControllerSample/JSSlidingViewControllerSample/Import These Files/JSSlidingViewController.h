@@ -13,9 +13,6 @@
 @interface JSSlidingViewController : UIViewController
 
 @property (nonatomic, readonly) BOOL animating;
-@property (nonatomic, readonly) BOOL dragging;
-@property (nonatomic, readonly) BOOL tracking;
-@property (nonatomic, readonly) BOOL decelerating;
 @property (nonatomic, readonly) BOOL isOpen;
 @property (nonatomic, assign) BOOL locked;
 @property (nonatomic, assign) BOOL frontViewControllerHasOpenCloseNavigationBarButton; // Defaults to YES.

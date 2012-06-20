@@ -54,9 +54,6 @@
 @implementation JSSlidingViewController
 
 @synthesize animating = _animating;
-@synthesize dragging = _dragging;
-@synthesize tracking = _tracking;
-@synthesize decelerating = _decelerating;
 @synthesize isOpen = _isOpen;
 @synthesize locked = _locked;
 @synthesize frontViewControllerHasOpenCloseNavigationBarButton = _frontViewControllerHasOpenCloseNavigationBarButton;
@@ -281,7 +278,7 @@
         } else {
             CGPoint origin = self.frontViewController.view.frame.origin;
             origin = [_slidingScrollView convertPoint:origin toView:self.view];
-            if ( (origin.x >= _sliderOpeningWidth) && (_animating == NO) ){
+            if (origin.x >= _sliderOpeningWidth) {
                 if (self.invisibleCloseSliderButton == nil) {
                     [self addInvisibleButton];
                 }
@@ -295,7 +292,13 @@
                     [self.invisibleCloseSliderButton removeFromSuperview];
                     self.invisibleCloseSliderButton = nil;
                 }
+                if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
+                    [self.delegate slidingViewControllerWillClose:self];
+                }
                 _isOpen = NO;
+                if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
+                    [self.delegate slidingViewControllerDidClose:self];
+                }
             }
         }
     }
@@ -309,19 +312,23 @@
             if (self.invisibleCloseSliderButton == nil) {
                 [self addInvisibleButton];
             }
-            if (_animating == NO) { // prevents bug that kept the stylistic animation blocks in the open/close:animated: methods from rendering properly
-                CGRect rect = _slidingScrollView.frame;
-                rect.origin.x = _sliderOpeningWidth;
-                _slidingScrollView.frame = rect;
-                _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
-                _isOpen = YES;
-            }
+            CGRect rect = _slidingScrollView.frame;
+            rect.origin.x = _sliderOpeningWidth;
+            _slidingScrollView.frame = rect;
+            _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
+            _isOpen = YES;
         } else {
             if (self.invisibleCloseSliderButton) {
                 [self.invisibleCloseSliderButton removeFromSuperview];
                 self.invisibleCloseSliderButton = nil;
             }
+            if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
+                [self.delegate slidingViewControllerWillClose:self];
+            }
             _isOpen = NO;
+            if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
+                [self.delegate slidingViewControllerDidClose:self];
+            }
         }
         self.view.userInteractionEnabled = YES;
     }
@@ -342,14 +349,24 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    if (_isOpen == YES && _locked == NO) {
-        CGRect rect = _slidingScrollView.frame;
-        rect.origin.x = 0;
-        _slidingScrollView.frame = rect;
-        _slidingScrollView.contentOffset = CGPointMake(0, 0);
-        if (self.invisibleCloseSliderButton) {
-            [self.invisibleCloseSliderButton removeFromSuperview];
-            self.invisibleCloseSliderButton = nil;
+    if (_locked == NO) {
+        if (_isOpen == YES) {
+            CGRect rect = _slidingScrollView.frame;
+            rect.origin.x = 0;
+            _slidingScrollView.frame = rect;
+            _slidingScrollView.contentOffset = CGPointMake(0, 0);
+            if (self.invisibleCloseSliderButton) {
+                [self.invisibleCloseSliderButton removeFromSuperview];
+                self.invisibleCloseSliderButton = nil;
+            }
+        } else {
+            if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillOpen:)]) {
+                [self.delegate slidingViewControllerWillOpen:self];
+            }
+            _isOpen = YES;
+            if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
+                [self.delegate slidingViewControllerDidOpen:self];
+            }
         }
     }
 }
@@ -428,6 +445,26 @@
 - (void)setAllowManualSliding:(BOOL)allowManualSliding {
     _allowManualSliding = allowManualSliding;
     _slidingScrollView.scrollEnabled = allowManualSliding;
+}
+
+- (UIViewController *)frontViewController {
+    return _frontViewController;
+}
+
+- (UIViewController *)backViewController {
+    return _backViewController;
+}
+
+- (BOOL)locked {
+    return _locked;
+}
+
+- (BOOL)animating {
+    return _animating;
+}
+
+- (BOOL)isOpen {
+    return _isOpen;
 }
 
 @end
