@@ -11,6 +11,20 @@
 #import "JSSlidingViewController.h"
 #import "BackViewController.h"
 
+@implementation UINavigationBar (NavBarShadow)
+
+- (void)setNeedsLayout {
+    [super setNeedsLayout];
+    if ([self viewWithTag:88888])
+        return;
+    UIImageView *shadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navBarDropShadow.png"]];
+    shadow.frame = CGRectMake(0.0f, 44.0f, 320.0f, 5.0f);
+    shadow.tag = 88888;
+    [self addSubview:shadow];
+}
+
+@end
+
 @implementation JSAppDelegate
 
 @synthesize window = _window;
@@ -22,6 +36,8 @@
 
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBarBG_default.png"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setTintColor:[UIColor brownColor]];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     
     self.frontVC = [[FrontViewController alloc] initWithNibName:@"FrontViewController" bundle:nil];
     self.frontVC.delegate = self;

@@ -7,6 +7,7 @@
 //
 
 #import "FrontViewController.h"
+#import "DetailViewController.h"
 
 @interface UIButton (JSButtonEdgeInsets)
 
@@ -27,19 +28,16 @@
 
 @interface FrontViewController ()
 
-@property (strong, nonatomic) IBOutlet UIButton *lockButton;
-@property (strong, nonatomic) IBOutlet UIButton *unlockButon;
+@property (nonatomic, strong) IBOutlet UITableView *myTableView;
 
 @end
 
 @implementation FrontViewController
 
-@synthesize lockButton;
-@synthesize unlockButon;
 @synthesize delegate;
+@synthesize myTableView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -47,8 +45,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"Front View C.";
     UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -58,32 +55,70 @@
     [customButton addTarget:self action:@selector(menuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"texture_creamPaper.png"]];
-    [self.lockButton setEdgeInsets:UIEdgeInsetsMake(0, 20, 0, 20)];
-    [self.unlockButon setEdgeInsets:UIEdgeInsetsMake(0, 20, 0, 20)];
 }
 
 - (void)menuButtonPressed:(id)sender {
     [self.delegate menuButtonPressed:sender];
 }
 
-- (void)viewDidUnload
-{
-    [self setLockButton:nil];
-    [self setUnlockButon:nil];
+- (void)viewDidUnload {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (void)viewDidAppear:(BOOL)animated {
+    [self.delegate unlockSlider];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
 - (IBAction)lockButtonPressed:(id)sender {
     [self.delegate lockSlider];
 }
+
 - (IBAction)unlockButtonPressed:(id)sender {
     [self.delegate unlockSlider];
 }
 
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 44;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.myTableView dequeueReusableCellWithIdentifier:@"dualLabelCell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"dualLabelCell"];
+    }
+    cell.textLabel.text = [NSString stringWithFormat:@"Detail Row %i", indexPath.row + 1];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {    
+    return 66.0f;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    DetailViewController *dvc = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+    [self.navigationController pushViewController:dvc animated:YES];
+    [self.delegate lockSlider];
+}
+
 @end
+
+
+
+
+
+
+
+

@@ -38,6 +38,8 @@
 		7FB2548C15918A6A0015E536 /* JSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2548B15918A6A0015E536 /* JSAppDelegate.m */; };
 		7FB2548F15918A6A0015E536 /* JSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2548E15918A6A0015E536 /* JSViewController.m */; };
 		7FB2549215918A6A0015E536 /* JSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FB2549015918A6A0015E536 /* JSViewController.xib */; };
+		7FB421CE15925E0F001F1D3B /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB421CC15925E0F001F1D3B /* DetailViewController.m */; };
+		7FB421CF15925E0F001F1D3B /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FB421CD15925E0F001F1D3B /* DetailViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +82,9 @@
 		7FB2548D15918A6A0015E536 /* JSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSViewController.h; sourceTree = "<group>"; };
 		7FB2548E15918A6A0015E536 /* JSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSViewController.m; sourceTree = "<group>"; };
 		7FB2549115918A6A0015E536 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/JSViewController.xib; sourceTree = "<group>"; };
+		7FB421CB15925E0F001F1D3B /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		7FB421CC15925E0F001F1D3B /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		7FB421CD15925E0F001F1D3B /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +139,9 @@
 				7F015673159245B200481CAB /* FrontViewController.h */,
 				7F015674159245B200481CAB /* FrontViewController.m */,
 				7F015675159245B200481CAB /* FrontViewController.xib */,
+				7FB421CB15925E0F001F1D3B /* DetailViewController.h */,
+				7FB421CC15925E0F001F1D3B /* DetailViewController.m */,
+				7FB421CD15925E0F001F1D3B /* DetailViewController.xib */,
 			);
 			name = "Classes for Test Project Only";
 			sourceTree = "<group>";
@@ -271,6 +279,7 @@
 				7F0156701592442A00481CAB /* frontViewControllerDropShadow.png in Resources */,
 				7F0156711592442A00481CAB /* frontViewControllerDropShadow@2x.png in Resources */,
 				7F015677159245B200481CAB /* FrontViewController.xib in Resources */,
+				7FB421CF15925E0F001F1D3B /* DetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +296,7 @@
 				7F01566A159243F800481CAB /* BackViewController.m in Sources */,
 				7F0156721592442A00481CAB /* JSSlidingViewController.m in Sources */,
 				7F015676159245B200481CAB /* FrontViewController.m in Sources */,
+				7FB421CE15925E0F001F1D3B /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

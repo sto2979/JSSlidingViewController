@@ -10,7 +10,7 @@
 
 @protocol MenuButtonDelegate;
 
-@interface FrontViewController : UIViewController
+@interface FrontViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) id <MenuButtonDelegate> delegate;
 
