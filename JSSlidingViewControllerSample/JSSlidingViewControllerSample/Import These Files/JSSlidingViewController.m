@@ -98,11 +98,12 @@
 #pragma mark - Controlling the Slider
 
 - (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0) {
-    if (_animating == NO && _isOpen) {
+    if (_animating == NO && _isOpen && _locked == NO) {
         if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
             [self.delegate slidingViewControllerWillClose:self];
         }
         _isOpen = NO; // Needs to be here to prevent bugs
+        _animating = YES;
         CGFloat duration1 = 0.0f;
         CGFloat duration2 = 0.0f;
         if (animated) {
@@ -137,23 +138,24 @@
 }
 
 - (void)openSlider:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0) {
-    if (_animating == NO && _isOpen == NO) {
+    if (_animating == NO && _isOpen == NO && _locked == NO) {
         if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillOpen:)]) {
             [self.delegate slidingViewControllerWillOpen:self];
         }
+        _animating = YES;
         _isOpen = YES; // Needs to be here to prevent bugs
         CGFloat duration1 = 0.0f;
         CGFloat duration2 = 0.0f;
         if (animated) {
             duration1 = 0.18f;
-            duration2 = 0.1f;
+            duration2 = 0.18f;
         }
         [UIView animateWithDuration:duration1  delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
-            CGRect rect = _slidingScrollView.frame;
-            rect.origin.x = _sliderOpeningWidth + 10;
-            _slidingScrollView.frame = rect;
+            CGRect aRect = _slidingScrollView.frame;
+            aRect.origin.x = _sliderOpeningWidth + 10;
+            _slidingScrollView.frame = aRect;
         } completion:^(BOOL finished) {
-            [UIView animateWithDuration:duration2  delay:0 options:UIViewAnimationOptionCurveEaseIn  animations:^{
+            [UIView animateWithDuration:duration2  delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
                   CGRect rect = _slidingScrollView.frame;
                   rect.origin.x = _sliderOpeningWidth;
                   _slidingScrollView.frame = rect;
@@ -271,21 +273,48 @@
  */
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (decelerate == YES) {
-        // We'll handle the rest after it's done decelerating...
-        self.view.userInteractionEnabled = NO;
-    } else {
+    if (_animating == NO) {
+        if (decelerate == YES) {
+            // We'll handle the rest after it's done decelerating...
+            self.view.userInteractionEnabled = NO;
+        } else {
+            CGPoint origin = self.frontViewController.view.frame.origin;
+            origin = [_slidingScrollView convertPoint:origin toView:self.view];
+            if ( (origin.x >= _sliderOpeningWidth) && (_animating == NO) ){
+                if (self.invisibleCloseSliderButton == nil) {
+                    [self addInvisibleButton];
+                }
+                CGRect rect = _slidingScrollView.frame;
+                rect.origin.x = _sliderOpeningWidth;
+                _slidingScrollView.frame = rect;
+                _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
+                _isOpen = YES;
+            } else {
+                if (self.invisibleCloseSliderButton) {
+                    [self.invisibleCloseSliderButton removeFromSuperview];
+                    self.invisibleCloseSliderButton = nil;
+                }
+                _isOpen = NO;
+            }
+        }
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {    
+    if (_animating == NO) {
         CGPoint origin = self.frontViewController.view.frame.origin;
         origin = [_slidingScrollView convertPoint:origin toView:self.view];
-        if ( (origin.x >= _sliderOpeningWidth) && (_animating == NO) ){
+        if ( (origin.x >= _sliderOpeningWidth) && (scrollView.dragging == NO) ){
             if (self.invisibleCloseSliderButton == nil) {
                 [self addInvisibleButton];
             }
-            CGRect rect = _slidingScrollView.frame;
-            rect.origin.x = _sliderOpeningWidth;
-            _slidingScrollView.frame = rect;
-            _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
-            _isOpen = YES;
+            if (_animating == NO) { // prevents bug that kept the stylistic animation blocks in the open/close:animated: methods from rendering properly
+                CGRect rect = _slidingScrollView.frame;
+                rect.origin.x = _sliderOpeningWidth;
+                _slidingScrollView.frame = rect;
+                _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
+                _isOpen = YES;
+            }
         } else {
             if (self.invisibleCloseSliderButton) {
                 [self.invisibleCloseSliderButton removeFromSuperview];
@@ -293,31 +322,8 @@
             }
             _isOpen = NO;
         }
+        self.view.userInteractionEnabled = YES;
     }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {    
-    CGPoint origin = self.frontViewController.view.frame.origin;
-    origin = [_slidingScrollView convertPoint:origin toView:self.view];
-    if ( (origin.x >= _sliderOpeningWidth) && (scrollView.dragging == NO) ){
-        if (self.invisibleCloseSliderButton == nil) {
-            [self addInvisibleButton];
-        }
-        if (_animating == NO) { // prevents bug that kept the stylistic animation blocks in the open/close:animated: methods from rendering properly
-            CGRect rect = _slidingScrollView.frame;
-            rect.origin.x = _sliderOpeningWidth;
-            _slidingScrollView.frame = rect;
-            _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
-            _isOpen = YES;
-        }
-    } else {
-        if (self.invisibleCloseSliderButton) {
-            [self.invisibleCloseSliderButton removeFromSuperview];
-            self.invisibleCloseSliderButton = nil;
-        }
-        _isOpen = NO;
-    }
-    self.view.userInteractionEnabled = YES;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {  
@@ -388,7 +394,7 @@
     if (_frontViewControllerHasOpenCloseNavigationBarButton) {
         yOrigin = 44.0f;
     }
-    self.invisibleCloseSliderButton.frame = CGRectMake(self.frontViewController.view.frame.origin.x, yOrigin, self.view.frame.size.width - _sliderOpeningWidth, self.view.frame.size.height - yOrigin);
+    self.invisibleCloseSliderButton.frame = CGRectMake(self.frontViewController.view.frame.origin.x, yOrigin, self.view.frame.size.width, self.view.frame.size.height - yOrigin);
     self.invisibleCloseSliderButton.backgroundColor = [UIColor clearColor];
     [self.invisibleCloseSliderButton addTarget:self action:@selector(invisibleButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [_slidingScrollView addSubview:self.invisibleCloseSliderButton];

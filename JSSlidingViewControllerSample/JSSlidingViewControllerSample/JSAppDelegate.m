@@ -9,25 +9,46 @@
 #import "JSAppDelegate.h"
 
 #import "JSSlidingViewController.h"
+#import "BackViewController.h"
 
 @implementation JSAppDelegate
 
 @synthesize window = _window;
 @synthesize viewController = _viewController;
+@synthesize frontVC, backVC;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIViewController *redViewCont = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    redViewCont.view.backgroundColor = [UIColor redColor];
-    UIViewController *greenViewCont = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    greenViewCont.view.backgroundColor = [UIColor greenColor];
-    self.viewController = [[JSSlidingViewController alloc] initWithFrontViewController:redViewCont backViewController:greenViewCont];
+
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBarBG_default.png"] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setTintColor:[UIColor brownColor]];
+    
+    self.frontVC = [[FrontViewController alloc] initWithNibName:@"FrontViewController" bundle:nil];
+    self.frontVC.delegate = self;
+    UINavigationController *navCont = [[UINavigationController alloc] initWithRootViewController:self.frontVC];
+    
+    self.backVC = [[BackViewController alloc] initWithNibName:@"BackViewController" bundle:nil];
+    
+    self.viewController = [[JSSlidingViewController alloc] initWithFrontViewController:navCont backViewController:self.backVC];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        self.viewController.locked = YES;
-    });
     return YES;
+}
+
+- (void)menuButtonPressed:(id)sender {
+    if (self.viewController.isOpen == NO) {
+        [self.viewController openSlider:YES completion:nil];
+    } else {
+        [self.viewController closeSlider:YES completion:nil];
+    }
+}
+
+- (void)lockSlider {
+    self.viewController.locked = YES;
+}
+
+- (void)unlockSlider {
+    self.viewController.locked = NO;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

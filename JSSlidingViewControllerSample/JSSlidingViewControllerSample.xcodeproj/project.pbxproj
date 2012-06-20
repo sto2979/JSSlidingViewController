@@ -7,8 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7F01563E159234D400481CAB /* frontViewControllerDropShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01563C159234D400481CAB /* frontViewControllerDropShadow.png */; };
-		7F01563F159234D400481CAB /* frontViewControllerDropShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01563D159234D400481CAB /* frontViewControllerDropShadow@2x.png */; };
+		7F015656159243A200481CAB /* general_blueButton_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015646159243A200481CAB /* general_blueButton_highlighted.png */; };
+		7F015657159243A200481CAB /* general_blueButton_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015647159243A200481CAB /* general_blueButton_highlighted@2x.png */; };
+		7F015658159243A200481CAB /* general_blueButton_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015648159243A200481CAB /* general_blueButton_normal.png */; };
+		7F015659159243A200481CAB /* general_blueButton_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015649159243A200481CAB /* general_blueButton_normal@2x.png */; };
+		7F01565A159243A200481CAB /* navBarDropShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01564A159243A200481CAB /* navBarDropShadow.png */; };
+		7F01565B159243A200481CAB /* navBarDropShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01564B159243A200481CAB /* navBarDropShadow@2x.png */; };
+		7F01565C159243A200481CAB /* navigationBar_menuButton_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01564C159243A200481CAB /* navigationBar_menuButton_highlighted.png */; };
+		7F01565D159243A200481CAB /* navigationBar_menuButton_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01564D159243A200481CAB /* navigationBar_menuButton_highlighted@2x.png */; };
+		7F01565E159243A200481CAB /* navigationBar_menuButton_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01564E159243A200481CAB /* navigationBar_menuButton_normal.png */; };
+		7F01565F159243A200481CAB /* navigationBar_menuButton_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01564F159243A200481CAB /* navigationBar_menuButton_normal@2x.png */; };
+		7F015660159243A200481CAB /* navigationBarBG_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015650159243A200481CAB /* navigationBarBG_default.png */; };
+		7F015661159243A200481CAB /* navigationBarBG_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015651159243A200481CAB /* navigationBarBG_default@2x.png */; };
+		7F015662159243A200481CAB /* texture_cardstock.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015652159243A200481CAB /* texture_cardstock.png */; };
+		7F015663159243A200481CAB /* texture_cardstock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015653159243A200481CAB /* texture_cardstock@2x.png */; };
+		7F015664159243A200481CAB /* texture_creamPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015654159243A200481CAB /* texture_creamPaper.png */; };
+		7F015665159243A200481CAB /* texture_creamPaper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F015655159243A200481CAB /* texture_creamPaper@2x.png */; };
+		7F01566A159243F800481CAB /* BackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F015668159243F800481CAB /* BackViewController.m */; };
+		7F01566B159243F800481CAB /* BackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F015669159243F800481CAB /* BackViewController.xib */; };
+		7F0156701592442A00481CAB /* frontViewControllerDropShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01566C1592442A00481CAB /* frontViewControllerDropShadow.png */; };
+		7F0156711592442A00481CAB /* frontViewControllerDropShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01566D1592442A00481CAB /* frontViewControllerDropShadow@2x.png */; };
+		7F0156721592442A00481CAB /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F01566F1592442A00481CAB /* JSSlidingViewController.m */; };
+		7F015676159245B200481CAB /* FrontViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F015674159245B200481CAB /* FrontViewController.m */; };
+		7F015677159245B200481CAB /* FrontViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F015675159245B200481CAB /* FrontViewController.xib */; };
 		7FB2547C15918A6A0015E536 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB2547B15918A6A0015E536 /* UIKit.framework */; };
 		7FB2547E15918A6A0015E536 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB2547D15918A6A0015E536 /* Foundation.framework */; };
 		7FB2548015918A6A0015E536 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB2547F15918A6A0015E536 /* CoreGraphics.framework */; };
@@ -17,12 +38,35 @@
 		7FB2548C15918A6A0015E536 /* JSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2548B15918A6A0015E536 /* JSAppDelegate.m */; };
 		7FB2548F15918A6A0015E536 /* JSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2548E15918A6A0015E536 /* JSViewController.m */; };
 		7FB2549215918A6A0015E536 /* JSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FB2549015918A6A0015E536 /* JSViewController.xib */; };
-		7FB2549B15918D4A0015E536 /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2549A15918D4A0015E536 /* JSSlidingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7F01563C159234D400481CAB /* frontViewControllerDropShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frontViewControllerDropShadow.png; sourceTree = "<group>"; };
-		7F01563D159234D400481CAB /* frontViewControllerDropShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frontViewControllerDropShadow@2x.png"; sourceTree = "<group>"; };
+		7F015646159243A200481CAB /* general_blueButton_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = general_blueButton_highlighted.png; sourceTree = "<group>"; };
+		7F015647159243A200481CAB /* general_blueButton_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "general_blueButton_highlighted@2x.png"; sourceTree = "<group>"; };
+		7F015648159243A200481CAB /* general_blueButton_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = general_blueButton_normal.png; sourceTree = "<group>"; };
+		7F015649159243A200481CAB /* general_blueButton_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "general_blueButton_normal@2x.png"; sourceTree = "<group>"; };
+		7F01564A159243A200481CAB /* navBarDropShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navBarDropShadow.png; sourceTree = "<group>"; };
+		7F01564B159243A200481CAB /* navBarDropShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navBarDropShadow@2x.png"; sourceTree = "<group>"; };
+		7F01564C159243A200481CAB /* navigationBar_menuButton_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationBar_menuButton_highlighted.png; sourceTree = "<group>"; };
+		7F01564D159243A200481CAB /* navigationBar_menuButton_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationBar_menuButton_highlighted@2x.png"; sourceTree = "<group>"; };
+		7F01564E159243A200481CAB /* navigationBar_menuButton_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationBar_menuButton_normal.png; sourceTree = "<group>"; };
+		7F01564F159243A200481CAB /* navigationBar_menuButton_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationBar_menuButton_normal@2x.png"; sourceTree = "<group>"; };
+		7F015650159243A200481CAB /* navigationBarBG_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationBarBG_default.png; sourceTree = "<group>"; };
+		7F015651159243A200481CAB /* navigationBarBG_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationBarBG_default@2x.png"; sourceTree = "<group>"; };
+		7F015652159243A200481CAB /* texture_cardstock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_cardstock.png; sourceTree = "<group>"; };
+		7F015653159243A200481CAB /* texture_cardstock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "texture_cardstock@2x.png"; sourceTree = "<group>"; };
+		7F015654159243A200481CAB /* texture_creamPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_creamPaper.png; sourceTree = "<group>"; };
+		7F015655159243A200481CAB /* texture_creamPaper@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "texture_creamPaper@2x.png"; sourceTree = "<group>"; };
+		7F015667159243F800481CAB /* BackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackViewController.h; sourceTree = "<group>"; };
+		7F015668159243F800481CAB /* BackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackViewController.m; sourceTree = "<group>"; };
+		7F015669159243F800481CAB /* BackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BackViewController.xib; sourceTree = "<group>"; };
+		7F01566C1592442A00481CAB /* frontViewControllerDropShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = frontViewControllerDropShadow.png; path = "Import These Files/frontViewControllerDropShadow.png"; sourceTree = "<group>"; };
+		7F01566D1592442A00481CAB /* frontViewControllerDropShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "frontViewControllerDropShadow@2x.png"; path = "Import These Files/frontViewControllerDropShadow@2x.png"; sourceTree = "<group>"; };
+		7F01566E1592442A00481CAB /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSSlidingViewController.h; path = "Import These Files/JSSlidingViewController.h"; sourceTree = "<group>"; };
+		7F01566F1592442A00481CAB /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSSlidingViewController.m; path = "Import These Files/JSSlidingViewController.m"; sourceTree = "<group>"; };
+		7F015673159245B200481CAB /* FrontViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrontViewController.h; sourceTree = "<group>"; };
+		7F015674159245B200481CAB /* FrontViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrontViewController.m; sourceTree = "<group>"; };
+		7F015675159245B200481CAB /* FrontViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FrontViewController.xib; sourceTree = "<group>"; };
 		7FB2547715918A6A0015E536 /* JSSlider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSSlider.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FB2547B15918A6A0015E536 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7FB2547D15918A6A0015E536 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -36,8 +80,6 @@
 		7FB2548D15918A6A0015E536 /* JSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSViewController.h; sourceTree = "<group>"; };
 		7FB2548E15918A6A0015E536 /* JSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSViewController.m; sourceTree = "<group>"; };
 		7FB2549115918A6A0015E536 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/JSViewController.xib; sourceTree = "<group>"; };
-		7FB2549915918D4A0015E536 /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
-		7FB2549A15918D4A0015E536 /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +96,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7F015645159243A200481CAB /* Images for Test Project Only */ = {
+			isa = PBXGroup;
+			children = (
+				7F015646159243A200481CAB /* general_blueButton_highlighted.png */,
+				7F015647159243A200481CAB /* general_blueButton_highlighted@2x.png */,
+				7F015648159243A200481CAB /* general_blueButton_normal.png */,
+				7F015649159243A200481CAB /* general_blueButton_normal@2x.png */,
+				7F01564A159243A200481CAB /* navBarDropShadow.png */,
+				7F01564B159243A200481CAB /* navBarDropShadow@2x.png */,
+				7F01564C159243A200481CAB /* navigationBar_menuButton_highlighted.png */,
+				7F01564D159243A200481CAB /* navigationBar_menuButton_highlighted@2x.png */,
+				7F01564E159243A200481CAB /* navigationBar_menuButton_normal.png */,
+				7F01564F159243A200481CAB /* navigationBar_menuButton_normal@2x.png */,
+				7F015650159243A200481CAB /* navigationBarBG_default.png */,
+				7F015651159243A200481CAB /* navigationBarBG_default@2x.png */,
+				7F015652159243A200481CAB /* texture_cardstock.png */,
+				7F015653159243A200481CAB /* texture_cardstock@2x.png */,
+				7F015654159243A200481CAB /* texture_creamPaper.png */,
+				7F015655159243A200481CAB /* texture_creamPaper@2x.png */,
+			);
+			name = "Images for Test Project Only";
+			path = ImagesForTestProjectOnly;
+			sourceTree = "<group>";
+		};
+		7F015666159243CD00481CAB /* Classes for Test Project Only */ = {
+			isa = PBXGroup;
+			children = (
+				7FB2548A15918A6A0015E536 /* JSAppDelegate.h */,
+				7FB2548B15918A6A0015E536 /* JSAppDelegate.m */,
+				7FB2548D15918A6A0015E536 /* JSViewController.h */,
+				7FB2548E15918A6A0015E536 /* JSViewController.m */,
+				7FB2549015918A6A0015E536 /* JSViewController.xib */,
+				7F015667159243F800481CAB /* BackViewController.h */,
+				7F015668159243F800481CAB /* BackViewController.m */,
+				7F015669159243F800481CAB /* BackViewController.xib */,
+				7F015673159245B200481CAB /* FrontViewController.h */,
+				7F015674159245B200481CAB /* FrontViewController.m */,
+				7F015675159245B200481CAB /* FrontViewController.xib */,
+			);
+			name = "Classes for Test Project Only";
+			sourceTree = "<group>";
+		};
 		7FB2546C15918A690015E536 = {
 			isa = PBXGroup;
 			children = (
@@ -84,12 +168,9 @@
 		7FB2548115918A6A0015E536 /* JSSlidingViewControllerSample */ = {
 			isa = PBXGroup;
 			children = (
-				7FB2548A15918A6A0015E536 /* JSAppDelegate.h */,
-				7FB2548B15918A6A0015E536 /* JSAppDelegate.m */,
-				7FB2548D15918A6A0015E536 /* JSViewController.h */,
-				7FB2548E15918A6A0015E536 /* JSViewController.m */,
+				7F015645159243A200481CAB /* Images for Test Project Only */,
+				7F015666159243CD00481CAB /* Classes for Test Project Only */,
 				7FB2549815918D110015E536 /* IMPORT THESE FILES */,
-				7FB2549015918A6A0015E536 /* JSViewController.xib */,
 				7FB2548215918A6A0015E536 /* Supporting Files */,
 			);
 			path = JSSlidingViewControllerSample;
@@ -109,10 +190,10 @@
 		7FB2549815918D110015E536 /* IMPORT THESE FILES */ = {
 			isa = PBXGroup;
 			children = (
-				7FB2549915918D4A0015E536 /* JSSlidingViewController.h */,
-				7FB2549A15918D4A0015E536 /* JSSlidingViewController.m */,
-				7F01563C159234D400481CAB /* frontViewControllerDropShadow.png */,
-				7F01563D159234D400481CAB /* frontViewControllerDropShadow@2x.png */,
+				7F01566C1592442A00481CAB /* frontViewControllerDropShadow.png */,
+				7F01566D1592442A00481CAB /* frontViewControllerDropShadow@2x.png */,
+				7F01566E1592442A00481CAB /* JSSlidingViewController.h */,
+				7F01566F1592442A00481CAB /* JSSlidingViewController.m */,
 			);
 			name = "IMPORT THESE FILES";
 			sourceTree = "<group>";
@@ -170,8 +251,26 @@
 			files = (
 				7FB2548615918A6A0015E536 /* InfoPlist.strings in Resources */,
 				7FB2549215918A6A0015E536 /* JSViewController.xib in Resources */,
-				7F01563E159234D400481CAB /* frontViewControllerDropShadow.png in Resources */,
-				7F01563F159234D400481CAB /* frontViewControllerDropShadow@2x.png in Resources */,
+				7F015656159243A200481CAB /* general_blueButton_highlighted.png in Resources */,
+				7F015657159243A200481CAB /* general_blueButton_highlighted@2x.png in Resources */,
+				7F015658159243A200481CAB /* general_blueButton_normal.png in Resources */,
+				7F015659159243A200481CAB /* general_blueButton_normal@2x.png in Resources */,
+				7F01565A159243A200481CAB /* navBarDropShadow.png in Resources */,
+				7F01565B159243A200481CAB /* navBarDropShadow@2x.png in Resources */,
+				7F01565C159243A200481CAB /* navigationBar_menuButton_highlighted.png in Resources */,
+				7F01565D159243A200481CAB /* navigationBar_menuButton_highlighted@2x.png in Resources */,
+				7F01565E159243A200481CAB /* navigationBar_menuButton_normal.png in Resources */,
+				7F01565F159243A200481CAB /* navigationBar_menuButton_normal@2x.png in Resources */,
+				7F015660159243A200481CAB /* navigationBarBG_default.png in Resources */,
+				7F015661159243A200481CAB /* navigationBarBG_default@2x.png in Resources */,
+				7F015662159243A200481CAB /* texture_cardstock.png in Resources */,
+				7F015663159243A200481CAB /* texture_cardstock@2x.png in Resources */,
+				7F015664159243A200481CAB /* texture_creamPaper.png in Resources */,
+				7F015665159243A200481CAB /* texture_creamPaper@2x.png in Resources */,
+				7F01566B159243F800481CAB /* BackViewController.xib in Resources */,
+				7F0156701592442A00481CAB /* frontViewControllerDropShadow.png in Resources */,
+				7F0156711592442A00481CAB /* frontViewControllerDropShadow@2x.png in Resources */,
+				7F015677159245B200481CAB /* FrontViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +284,9 @@
 				7FB2548815918A6A0015E536 /* main.m in Sources */,
 				7FB2548C15918A6A0015E536 /* JSAppDelegate.m in Sources */,
 				7FB2548F15918A6A0015E536 /* JSViewController.m in Sources */,
-				7FB2549B15918D4A0015E536 /* JSSlidingViewController.m in Sources */,
+				7F01566A159243F800481CAB /* BackViewController.m in Sources */,
+				7F0156721592442A00481CAB /* JSSlidingViewController.m in Sources */,
+				7F015676159245B200481CAB /* FrontViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

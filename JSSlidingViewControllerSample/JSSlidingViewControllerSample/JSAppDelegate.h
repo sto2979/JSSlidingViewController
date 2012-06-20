@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FrontViewController.h"
 
-@class JSSlidingViewController;
+@class JSSlidingViewController, BackViewController;
 
-@interface JSAppDelegate : UIResponder <UIApplicationDelegate>
+@interface JSAppDelegate : UIResponder <UIApplicationDelegate, MenuButtonDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong, nonatomic) JSSlidingViewController *viewController;
+@property (strong, nonatomic) BackViewController *backVC;
+@property (strong, nonatomic) FrontViewController *frontVC;
 
 @end
