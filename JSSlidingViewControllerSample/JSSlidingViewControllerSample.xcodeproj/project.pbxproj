@@ -1,0 +1,305 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7F01563E159234D400481CAB /* frontViewControllerDropShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01563C159234D400481CAB /* frontViewControllerDropShadow.png */; };
+		7F01563F159234D400481CAB /* frontViewControllerDropShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F01563D159234D400481CAB /* frontViewControllerDropShadow@2x.png */; };
+		7FB2547C15918A6A0015E536 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB2547B15918A6A0015E536 /* UIKit.framework */; };
+		7FB2547E15918A6A0015E536 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB2547D15918A6A0015E536 /* Foundation.framework */; };
+		7FB2548015918A6A0015E536 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB2547F15918A6A0015E536 /* CoreGraphics.framework */; };
+		7FB2548615918A6A0015E536 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FB2548415918A6A0015E536 /* InfoPlist.strings */; };
+		7FB2548815918A6A0015E536 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2548715918A6A0015E536 /* main.m */; };
+		7FB2548C15918A6A0015E536 /* JSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2548B15918A6A0015E536 /* JSAppDelegate.m */; };
+		7FB2548F15918A6A0015E536 /* JSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2548E15918A6A0015E536 /* JSViewController.m */; };
+		7FB2549215918A6A0015E536 /* JSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FB2549015918A6A0015E536 /* JSViewController.xib */; };
+		7FB2549B15918D4A0015E536 /* JSSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB2549A15918D4A0015E536 /* JSSlidingViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7F01563C159234D400481CAB /* frontViewControllerDropShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frontViewControllerDropShadow.png; sourceTree = "<group>"; };
+		7F01563D159234D400481CAB /* frontViewControllerDropShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frontViewControllerDropShadow@2x.png"; sourceTree = "<group>"; };
+		7FB2547715918A6A0015E536 /* JSSlider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSSlider.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FB2547B15918A6A0015E536 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		7FB2547D15918A6A0015E536 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		7FB2547F15918A6A0015E536 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		7FB2548315918A6A0015E536 /* JSSlidingViewControllerSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JSSlidingViewControllerSample-Info.plist"; sourceTree = "<group>"; };
+		7FB2548515918A6A0015E536 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7FB2548715918A6A0015E536 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7FB2548915918A6A0015E536 /* JSSlidingViewControllerSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JSSlidingViewControllerSample-Prefix.pch"; sourceTree = "<group>"; };
+		7FB2548A15918A6A0015E536 /* JSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSAppDelegate.h; sourceTree = "<group>"; };
+		7FB2548B15918A6A0015E536 /* JSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSAppDelegate.m; sourceTree = "<group>"; };
+		7FB2548D15918A6A0015E536 /* JSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSViewController.h; sourceTree = "<group>"; };
+		7FB2548E15918A6A0015E536 /* JSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSViewController.m; sourceTree = "<group>"; };
+		7FB2549115918A6A0015E536 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/JSViewController.xib; sourceTree = "<group>"; };
+		7FB2549915918D4A0015E536 /* JSSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSSlidingViewController.h; sourceTree = "<group>"; };
+		7FB2549A15918D4A0015E536 /* JSSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSSlidingViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7FB2547415918A6A0015E536 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7FB2547C15918A6A0015E536 /* UIKit.framework in Frameworks */,
+				7FB2547E15918A6A0015E536 /* Foundation.framework in Frameworks */,
+				7FB2548015918A6A0015E536 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7FB2546C15918A690015E536 = {
+			isa = PBXGroup;
+			children = (
+				7FB2548115918A6A0015E536 /* JSSlidingViewControllerSample */,
+				7FB2547A15918A6A0015E536 /* Frameworks */,
+				7FB2547815918A6A0015E536 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7FB2547815918A6A0015E536 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7FB2547715918A6A0015E536 /* JSSlider.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7FB2547A15918A6A0015E536 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7FB2547B15918A6A0015E536 /* UIKit.framework */,
+				7FB2547D15918A6A0015E536 /* Foundation.framework */,
+				7FB2547F15918A6A0015E536 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7FB2548115918A6A0015E536 /* JSSlidingViewControllerSample */ = {
+			isa = PBXGroup;
+			children = (
+				7FB2548A15918A6A0015E536 /* JSAppDelegate.h */,
+				7FB2548B15918A6A0015E536 /* JSAppDelegate.m */,
+				7FB2548D15918A6A0015E536 /* JSViewController.h */,
+				7FB2548E15918A6A0015E536 /* JSViewController.m */,
+				7FB2549815918D110015E536 /* IMPORT THESE FILES */,
+				7FB2549015918A6A0015E536 /* JSViewController.xib */,
+				7FB2548215918A6A0015E536 /* Supporting Files */,
+			);
+			path = JSSlidingViewControllerSample;
+			sourceTree = "<group>";
+		};
+		7FB2548215918A6A0015E536 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7FB2548315918A6A0015E536 /* JSSlidingViewControllerSample-Info.plist */,
+				7FB2548415918A6A0015E536 /* InfoPlist.strings */,
+				7FB2548715918A6A0015E536 /* main.m */,
+				7FB2548915918A6A0015E536 /* JSSlidingViewControllerSample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7FB2549815918D110015E536 /* IMPORT THESE FILES */ = {
+			isa = PBXGroup;
+			children = (
+				7FB2549915918D4A0015E536 /* JSSlidingViewController.h */,
+				7FB2549A15918D4A0015E536 /* JSSlidingViewController.m */,
+				7F01563C159234D400481CAB /* frontViewControllerDropShadow.png */,
+				7F01563D159234D400481CAB /* frontViewControllerDropShadow@2x.png */,
+			);
+			name = "IMPORT THESE FILES";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7FB2547615918A6A0015E536 /* JSSlidingViewControllerSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7FB2549515918A6A0015E536 /* Build configuration list for PBXNativeTarget "JSSlidingViewControllerSample" */;
+			buildPhases = (
+				7FB2547315918A6A0015E536 /* Sources */,
+				7FB2547415918A6A0015E536 /* Frameworks */,
+				7FB2547515918A6A0015E536 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JSSlidingViewControllerSample;
+			productName = JSSlidingViewControllerSample;
+			productReference = 7FB2547715918A6A0015E536 /* JSSlider.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7FB2546E15918A690015E536 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = JS;
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 7FB2547115918A690015E536 /* Build configuration list for PBXProject "JSSlidingViewControllerSample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7FB2546C15918A690015E536;
+			productRefGroup = 7FB2547815918A6A0015E536 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7FB2547615918A6A0015E536 /* JSSlidingViewControllerSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7FB2547515918A6A0015E536 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7FB2548615918A6A0015E536 /* InfoPlist.strings in Resources */,
+				7FB2549215918A6A0015E536 /* JSViewController.xib in Resources */,
+				7F01563E159234D400481CAB /* frontViewControllerDropShadow.png in Resources */,
+				7F01563F159234D400481CAB /* frontViewControllerDropShadow@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7FB2547315918A6A0015E536 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7FB2548815918A6A0015E536 /* main.m in Sources */,
+				7FB2548C15918A6A0015E536 /* JSAppDelegate.m in Sources */,
+				7FB2548F15918A6A0015E536 /* JSViewController.m in Sources */,
+				7FB2549B15918D4A0015E536 /* JSSlidingViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		7FB2548415918A6A0015E536 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7FB2548515918A6A0015E536 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		7FB2549015918A6A0015E536 /* JSViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7FB2549115918A6A0015E536 /* en */,
+			);
+			name = JSViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7FB2549315918A6A0015E536 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7FB2549415918A6A0015E536 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7FB2549615918A6A0015E536 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JSSlidingViewControllerSample/JSSlidingViewControllerSample-Prefix.pch";
+				INFOPLIST_FILE = "JSSlidingViewControllerSample/JSSlidingViewControllerSample-Info.plist";
+				PRODUCT_NAME = JSSlider;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		7FB2549715918A6A0015E536 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "JSSlidingViewControllerSample/JSSlidingViewControllerSample-Prefix.pch";
+				INFOPLIST_FILE = "JSSlidingViewControllerSample/JSSlidingViewControllerSample-Info.plist";
+				PRODUCT_NAME = JSSlider;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7FB2547115918A690015E536 /* Build configuration list for PBXProject "JSSlidingViewControllerSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7FB2549315918A6A0015E536 /* Debug */,
+				7FB2549415918A6A0015E536 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7FB2549515918A6A0015E536 /* Build configuration list for PBXNativeTarget "JSSlidingViewControllerSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7FB2549615918A6A0015E536 /* Debug */,
+				7FB2549715918A6A0015E536 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7FB2546E15918A690015E536 /* Project object */;
+}
