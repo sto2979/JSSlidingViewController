@@ -67,6 +67,33 @@ BOOL locked;
 
 
 
+In-Depth Discussion
+===================
+ 
+# Nota Bene
+
+Some of these scroll view delegate method implementations may look quite strange, but it has to do with the peculiarities of the timing and circumstances of UIScrollViewDelegate callbacks. Numerous bugs and unusual edge cases have been accounted for via rigorous testing. Edit these with extreme care!!!
+ 
+# How It Works:
+ 
+1. The slidingScrollView is a container for the frontmost content. The back-most content is not a part of the slidingScrollView's hierarchy. The slidingScrollView has a clear background color, which masks the technique I'm using. To make it easier to see what's happening, try temporarily setting it's background color to a semi-translucent color in the *setupSlidingScrollView* method.
+ 
+2. When the slider is closed and at rest, the scroll view's frame fills the display.
+ 
+3. When the slider is open and at rest, the scroll view's frame is snapped over to the right, starting at an x origin of 262.
+ 
+4. When the slider is being opened or closed and is tracking a dragging touch, the scroll view's frame fills the display.
+
+5. When the slider has finished animating/decelerating to either the closed or open position, the UIScrollView delegate callbacks are used to determine what to do next. If the slider has come to rest in the open position, the scroll view's frame's x origin is set to the value in #3, and an "invisible button" is added over the visible portion of the main content to catch touch events and trigger a close action. If the slider has come to rest in the closed position, the invisible button is removed, and the scroll view's frame once again fills the display.
+ 
+6. Numerous edge cases were solved for, most of them related to what happens when touches/drags begin or end before the slider has finished decelerating (in either direction).
+
+7. Changes to the scroll view frame or the invisible button are also triggered by UIView touch event methods like touchesBegan and touchesEnded. Since not every touch sequence turns into a drag, responses to these touch events must perform some of the same functions as responses to scroll view delegate methods. This explains why there is some overlap between the two kinds of sequences.
+ 
+# Summary:
+
+By combining UIScrollViewDelegate methods and UIView touch event methods, I am able to mimic the slide-to-reveal navigation that is currently in-vogue, but without having to manually track touches and calculate dragging & decelerating animations. Apple's own implementation of UIScrollView touch tracking is infinitely smoother and richer than any third party library.
+
 
 
 License Agreement
