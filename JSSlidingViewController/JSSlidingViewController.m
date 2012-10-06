@@ -114,9 +114,6 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self updateInterface];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:100.0f];
-    });
 }
 
 #pragma mark - AutoRotation
