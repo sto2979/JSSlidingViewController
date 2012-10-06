@@ -83,7 +83,9 @@ You can set the width of the visible portion of the front view controller that i
 
 You can also temporarily disable all opening or closing by setting the following property:
 
+```
 BOOL locked;
+```
 
 Lastly, you can control the interface orientation methods via two delegate methods (one for i0S 5 and the other for iOS 6) that are self-explanatory:
 
