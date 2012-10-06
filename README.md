@@ -7,9 +7,15 @@ by Jared Sinclair  -  http://www.jaredsinclair.com
 What is JSSlidingViewController ?
 =================================
 
-JSSlidingViewController is an easy way to add "slide-to-reveal" style navigation to an iPhone or iPod Touch app. This is similar to the kind of navigation found in Facebook.app, Path.app, and many others. It's a subclass of UIViewController that uses the view controller containment methods available in iOS 5.0 or later. 
+JSSlidingViewController is an easy way to add "slide-to-reveal" style navigation to an iPhone, iPad, or iPod Touch app. This is similar to the kind of navigation found in Facebook.app, Path.app, and many others. It's a subclass of UIViewController that uses the view controller containment methods available in iOS 5.0 or later.
 
 
+What Does it Support ?
+======================
+
+iOS: 5 and 6
+Devices: iPhone, iPad, and iPod Touch
+Orientations: All 4 interface orientations !
 
 
 What's so Great About JSSlidingViewController ?
@@ -25,46 +31,75 @@ How do I use JSSlidingViewController ?
 
 Include the following four files in your project:
 
+```
 - JSSlidingViewController.h
 - JSSlidingViewController.m
 - frontViewControllerDropShadow.png
 - frontViewControllerDropShadow@2x.png
 
+```
+
 You create a JSSlidingViewController by calling:
 
+```
 - (id)initWithFrontViewController:backViewController:
+
+```
 
 The frontViewController and backViewController properties are self-explanatory. Just pass in the view controllers you wish to use in that init method. You can also change them later with optional fade animations using the following methods:
 
+```
 - (void)setFrontViewController:animated:completion:
 - (void)setBackViewController:animated:completion:
 
-JSSlidingViewController automatically adds a drop shadow next to the front view controller, to add depth. Rather than draw it programmatically, the drop shadow is rendered with an image view. This results in much better visual performance.
+```
+
+JSSlidingViewController automatically adds drop shadows next to the front view controller, to add depth. Rather than draw them programmatically, the drop shadow is rendered with an image view. This results in much better visual performance at the expense of a trivial amount of memory.
 
 You can let the user open and close the sliding scroll view manually, or you can control it programmatically. The programmatic methods take optional completion blocks:
 
+```
 - (void)closeSlider:completion:
 - (void)openSlider:completion:
 
+```
+
 You can even disable manual sliding with:
 
+```
 BOOL allowManualSliding;
+
+```
 
 JSSlidingViewController also supports the following optional delegate methods, which are called whether or not the opening/closing was performed manually or programmatically:
 
+```
 - slidingViewControllerWillOpen:
 - slidingViewControllerWillClose:
 - slidingViewControllerDidOpen:
 - slidingViewControllerDidClose:
 
+```
+
 You can set the width of the visible portion of the front view controller that is seen when the sliding scroll view is all the way open. It defaults to 58 points, but you can change it with:
 
-- (void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:
+```
+-(void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:
+
+```
 
 You can also temporarily disable all opening or closing by setting the following property:
 
 BOOL locked;
 
+Lastly, you can control the interface orientation methods via two delegate methods (one for i0S 5 and the other for iOS 6) that are self-explanatory:
+
+```
+-(NSUInteger)supportedInterfaceOrientationsForSlidingViewController:
+
+-(BOOL)slidingViewController:shouldAutorotateToInterfaceOrientation:
+
+```
 
 
 In-Depth Discussion
