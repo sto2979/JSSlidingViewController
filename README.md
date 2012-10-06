@@ -124,11 +124,11 @@ Lastly, you can control the interface orientation methods via two additional del
 In-Depth Discussion
 ===================
  
-# Nota Bene
+### Nota Bene
 
 Some of these scroll view delegate method implementations may look quite strange, but it has to do with the peculiarities of the timing and circumstances of UIScrollViewDelegate callbacks. Numerous bugs and unusual edge cases have been accounted for via rigorous testing. Edit these with extreme care!!!
  
-# How It Works:
+###How It Works:
  
 1. The slidingScrollView is a container for the frontmost content. The back-most content is not a part of the slidingScrollView's hierarchy. The slidingScrollView has a clear background color, which masks the technique I'm using. To make it easier to see what's happening, try temporarily setting it's background color to a semi-translucent color in the *setupSlidingScrollView* method.
  
@@ -144,7 +144,7 @@ Some of these scroll view delegate method implementations may look quite strange
 
 7. Changes to the scroll view frame or the invisible button are also triggered by UIView touch event methods like touchesBegan and touchesEnded. Since not every touch sequence turns into a drag, responses to these touch events must perform some of the same functions as responses to scroll view delegate methods. This explains why there is some overlap between the two kinds of sequences.
  
-# Summary:
+### Summary:
 
 By combining UIScrollViewDelegate methods and UIView touch event methods, I am able to mimic the slide-to-reveal navigation that is currently in-vogue, but without having to manually track touches and calculate dragging & decelerating animations. Apple's own implementation of UIScrollView touch tracking is infinitely smoother and richer than any third party library.
 
