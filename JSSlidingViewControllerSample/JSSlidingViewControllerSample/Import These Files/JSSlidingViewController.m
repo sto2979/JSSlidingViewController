@@ -79,6 +79,7 @@
     if (self) {
         _frontViewController = frontVC;
         _backViewController = backVC;
+        _useBouncyAnimations = YES;
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameWillChange:) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
     }
@@ -103,6 +104,19 @@
     [self addChildViewController:self.frontViewController];
     [_slidingScrollView addSubview:self.frontViewController.view];
     [self.frontViewController didMoveToParentViewController:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self updateInterface];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self updateInterface];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:100.0f];
+    });
 }
 
 #pragma mark - AutoRotation
@@ -136,7 +150,11 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [self setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:self.desiredVisiblePortionOfFrontViewWhenOpen];
+    [self updateInterface];
+}
+
+- (void)updateInterface {
+    _sliderOpeningWidth = self.view.bounds.size.width - self.desiredVisiblePortionOfFrontViewWhenOpen;
     CGRect frame = self.view.bounds;
     CGFloat targetOriginForSlidingScrollView = 0;
     if (self.isOpen) {
@@ -148,6 +166,7 @@
     _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
     _slidingScrollView.frame = CGRectMake(targetOriginForSlidingScrollView, 0, frame.size.width, frame.size.height);
     self.frontViewController.view.frame = CGRectMake(_sliderOpeningWidth, 0, frame.size.width, frame.size.height);
+    self.invisibleCloseSliderButton.frame = CGRectMake(_sliderOpeningWidth, self.invisibleCloseSliderButton.frame.origin.y, frame.size.width, frame.size.height);
 }
 
 #pragma mark - Status Bar Changes
@@ -173,91 +192,160 @@
 #pragma mark - Controlling the Slider
 
 - (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion {
+    [completion copy];
     if (_animating == NO && _isOpen && _locked == NO) {
         if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
             [self.delegate slidingViewControllerWillClose:self];
         }
         _isOpen = NO; // Needs to be here to prevent bugs
         _animating = YES;
-        CGFloat duration1 = 0.0f;
-        CGFloat duration2 = 0.0f;
-        if (animated) {
-            duration1 = 0.18f;
-            duration2 = 0.1f;
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                duration1 = duration1 * 1.5f;
-                duration2 = duration2 * 1.5f;
-            }
+        if (self.useBouncyAnimations) {
+            [self closeWithBouncyAnimation:animated completion:completion];
+        } else {
+            [self closeWithSmoothAnimation:animated completion:completion];
         }
-        [UIView animateWithDuration: duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                 CGRect rect = _slidingScrollView.frame;
-                 rect.origin.x = -10.0f;
-                 _slidingScrollView.frame = rect;
-             } completion:^(BOOL finished) {
-                 [UIView animateWithDuration: duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                          CGRect rect = _slidingScrollView.frame;
-                          rect.origin.x = 0;
-                          _slidingScrollView.frame = rect;
-                      } completion:^(BOOL finished) {
-                          if (self.invisibleCloseSliderButton) {
-                              [self.invisibleCloseSliderButton removeFromSuperview];
-                              self.invisibleCloseSliderButton = nil;
-                          }
-                          _animating = NO;
-                          self.view.userInteractionEnabled = YES;
-                          if (completion) {
-                              dispatch_async(dispatch_get_main_queue(), completion);
-                          }
-                          if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
-                              [self.delegate slidingViewControllerDidClose:self];
-                          }
-                      }];  
-             }];
     }
 }
 
+- (void)closeWithBouncyAnimation:(BOOL)animated completion:(void(^)(void))completion {
+    CGFloat duration1 = 0.0f;
+    CGFloat duration2 = 0.0f;
+    if (animated) {
+        duration1 = 0.18f;
+        duration2 = 0.1f;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            duration1 = duration1 * 1.5f;
+            duration2 = duration2 * 1.5f;
+        }
+    }
+    [UIView animateWithDuration: duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        CGRect rect = _slidingScrollView.frame;
+        rect.origin.x = -10.0f;
+        _slidingScrollView.frame = rect;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration: duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            CGRect rect = _slidingScrollView.frame;
+            rect.origin.x = 0;
+            _slidingScrollView.frame = rect;
+        } completion:^(BOOL finished) {
+            if (self.invisibleCloseSliderButton) {
+                [self.invisibleCloseSliderButton removeFromSuperview];
+                self.invisibleCloseSliderButton = nil;
+            }
+            _animating = NO;
+            self.view.userInteractionEnabled = YES;
+            if (completion) {
+                completion();
+            }
+            if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
+                [self.delegate slidingViewControllerDidClose:self];
+            }
+        }];
+    }];
+}
+
+- (void)closeWithSmoothAnimation:(BOOL)animated completion:(void(^)(void))completion {
+    CGFloat duration = 0;
+    if (animated) {
+        duration = 0.25f;
+    }
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        CGRect rect = _slidingScrollView.frame;
+        rect.origin.x = 0;
+        _slidingScrollView.frame = rect;
+    } completion:^(BOOL finished) {
+        if (self.invisibleCloseSliderButton) {
+            [self.invisibleCloseSliderButton removeFromSuperview];
+            self.invisibleCloseSliderButton = nil;
+        }
+        _animating = NO;
+        self.view.userInteractionEnabled = YES;
+        if (completion) {
+            completion();
+        }
+        if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
+            [self.delegate slidingViewControllerDidClose:self];
+        }
+    }];
+}
+
 - (void)openSlider:(BOOL)animated completion:(void (^)(void))completion {
+    [completion copy];
     if (_animating == NO && _isOpen == NO && _locked == NO) {
         if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillOpen:)]) {
             [self.delegate slidingViewControllerWillOpen:self];
         }
-        NSLog(@"op: %g", _sliderOpeningWidth);
         _animating = YES;
         _isOpen = YES; // Needs to be here to prevent bugs
-        CGFloat duration1 = 0.0f;
-        CGFloat duration2 = 0.0f;
-        if (animated) {
-            duration1 = 0.18f;
-            duration2 = 0.18f;
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                duration1 = duration1 * 1.5f;
-                duration2 = duration2 * 1.5f;
-            }
+        if (self.useBouncyAnimations) {
+            [self openWithBouncyAnimation:animated completion:completion];
+        } else {
+            [self openWithSmoothAnimation:animated completion:completion];
         }
-        [UIView animateWithDuration:duration1  delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
-            CGRect aRect = _slidingScrollView.frame;
-            aRect.origin.x = _sliderOpeningWidth + 10;
-            _slidingScrollView.frame = aRect;
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:duration2  delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                  CGRect rect = _slidingScrollView.frame;
-                  rect.origin.x = _sliderOpeningWidth;
-                  _slidingScrollView.frame = rect;
-              } completion:^(BOOL finished) {
-                  if (self.invisibleCloseSliderButton == nil) {
-                      [self addInvisibleButton];
-                  }
-                  _animating = NO;
-                  self.view.userInteractionEnabled = YES; 
-                  if (completion) {
-                      dispatch_async(dispatch_get_main_queue(), completion);
-                  }
-                  if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
-                      [self.delegate slidingViewControllerDidOpen:self];
-                  }
-              }]; 
-        }];
     }
+}
+
+- (void)openWithBouncyAnimation:(BOOL)animated completion:(void(^)(void))completion {
+    CGFloat duration1 = 0.0f;
+    CGFloat duration2 = 0.0f;
+    if (animated) {
+        duration1 = 0.18f;
+        duration2 = 0.18f;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            duration1 = duration1 * 1.5f;
+            duration2 = duration2 * 1.5f;
+        }
+    }
+    [UIView animateWithDuration:duration1  delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+        CGRect aRect = _slidingScrollView.frame;
+        aRect.origin.x = _sliderOpeningWidth + 10;
+        _slidingScrollView.frame = aRect;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:duration2  delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            CGRect rect = _slidingScrollView.frame;
+            rect.origin.x = _sliderOpeningWidth;
+            _slidingScrollView.frame = rect;
+        } completion:^(BOOL finished) {
+            if (self.invisibleCloseSliderButton == nil) {
+                [self addInvisibleButton];
+            }
+            _animating = NO;
+            self.view.userInteractionEnabled = YES;
+            if (completion) {
+                completion();
+            }
+            if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
+                [self.delegate slidingViewControllerDidOpen:self];
+            }
+        }];
+    }];
+}
+
+- (void)openWithSmoothAnimation:(BOOL)animated completion:(void(^)(void))completion {
+    CGFloat duration = 0.0f;
+    if (animated) {
+        duration = 0.25f;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            duration = 0.4f;
+        }
+    }
+    [UIView animateWithDuration:duration  delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        CGRect rect = _slidingScrollView.frame;
+        rect.origin.x = _sliderOpeningWidth;
+        _slidingScrollView.frame = rect;
+    } completion:^(BOOL finished) {
+        if (self.invisibleCloseSliderButton == nil) {
+            [self addInvisibleButton];
+        }
+        _animating = NO;
+        self.view.userInteractionEnabled = YES;
+        if (completion) {
+            completion();
+        }
+        if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
+            [self.delegate slidingViewControllerDidOpen:self];
+        }
+    }];
 }
 
 - (void)setFrontViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion {
@@ -518,8 +606,12 @@
 }
 
 - (void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:(CGFloat)width {
+    CGFloat startingVisibleWidth = _sliderOpeningWidth;
     self.desiredVisiblePortionOfFrontViewWhenOpen = width;
     _sliderOpeningWidth = self.view.bounds.size.width - self.desiredVisiblePortionOfFrontViewWhenOpen;
+    if (startingVisibleWidth != _sliderOpeningWidth) {
+        [self updateInterface];
+    }
 }
 
 - (void)setLocked:(BOOL)locked {

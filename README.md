@@ -53,6 +53,12 @@ The frontViewController and backViewController properties are self-explanatory. 
 
 JSSlidingViewController automatically adds drop shadows next to the front view controller, to add depth. Rather than draw them programmatically, the drop shadow is rendered with an image view. This results in much better visual performance at the expense of a trivial amount of memory.
 
+
+
+
+Opening and Closing The Slider
+=======================
+
 You can let the user open and close the sliding scroll view manually, or you can control it programmatically. The programmatic methods take optional completion blocks:
 
 ```
@@ -60,11 +66,43 @@ You can let the user open and close the sliding scroll view manually, or you can
 - (void)openSlider:completion:
 ```
 
-You can even disable manual sliding with:
+
+Options
+======
+
+###Locking the Slider
+
+You can temporarily disable all opening or closing (either via touches or programmatically) by setting the following property:
+
+```
+BOOL locked;
+```
+
+You can disable just manual sliding with:
 
 ```
 BOOL allowManualSliding;
 ```
+
+###Visible Portion of the Front View Controller
+
+You can set the width of the visible portion of the front view controller that is seen when the sliding scroll view is all the way open. It defaults to 58 points, but you can change it with:
+
+```
+-(void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:
+```
+
+###Animation Styles: Bouncy or Not?
+
+By default, JSSlidingViewController uses a “bouncy” animation style when the slider is opened/closed programmatically. You can turn this off in favor of a smooth animation style via the following:
+
+```
+BOOL useBouncyAnimations
+```
+
+
+Delegate Protocol
+=============
 
 JSSlidingViewController also supports the following optional delegate methods, which are called whether or not the opening/closing was performed manually or programmatically:
 
@@ -75,19 +113,7 @@ JSSlidingViewController also supports the following optional delegate methods, w
 - slidingViewControllerDidClose:
 ```
 
-You can set the width of the visible portion of the front view controller that is seen when the sliding scroll view is all the way open. It defaults to 58 points, but you can change it with:
-
-```
--(void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:
-```
-
-You can also temporarily disable all opening or closing by setting the following property:
-
-```
-BOOL locked;
-```
-
-Lastly, you can control the interface orientation methods via two delegate methods (one for i0S 5 and the other for iOS 6) that are self-explanatory:
+Lastly, you can control the interface orientation methods via two additional delegate methods (one for i0S 5 and the other for iOS 6) that are self-explanatory:
 
 ```
 -(NSUInteger)supportedInterfaceOrientationsForSlidingViewController:
