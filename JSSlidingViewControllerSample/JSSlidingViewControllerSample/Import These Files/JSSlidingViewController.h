@@ -22,10 +22,10 @@
 @property (nonatomic, assign) BOOL allowManualSliding;
 
 - (id)initWithFrontViewController:(UIViewController *)frontVC backViewController:(UIViewController *)backVC;
-- (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0);
-- (void)openSlider:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0);
-- (void)setFrontViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0);
-- (void)setBackViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0);
+- (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion;
+- (void)openSlider:(BOOL)animated completion:(void (^)(void))completion;
+- (void)setFrontViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion;
+- (void)setBackViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion;
 - (void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:(CGFloat)width;
 
 @end
@@ -40,5 +40,9 @@
 - (void)slidingViewControllerWillClose:(JSSlidingViewController *)viewController;
 - (void)slidingViewControllerDidOpen:(JSSlidingViewController *)viewController;
 - (void)slidingViewControllerDidClose:(JSSlidingViewController *)viewController;
+
+// If these are not implemented by the delegate, they return UIInterfaceOrientationPortrait for iPhone and all 4 orientations for iPad.
+- (NSUInteger)supportedInterfaceOrientationsForSlidingViewController:(JSSlidingViewController *)viewController;
+- (BOOL)slidingViewController:(JSSlidingViewController *)viewController shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
 @end

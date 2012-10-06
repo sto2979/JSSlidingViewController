@@ -17,13 +17,13 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.clipsToBounds = NO; // So that dropshadow along the lefthand side of the frontViewController still appears when the slider is open.
+        self.clipsToBounds = NO; // So that dropshadow along the sides of the frontViewController still appear when the slider is open.
         self.backgroundColor = [UIColor clearColor];
         self.pagingEnabled = YES;
         self.bounces = NO;
         self.showsVerticalScrollIndicator = NO;
         self.showsHorizontalScrollIndicator = NO;
-        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         self.delaysContentTouches = NO;
         self.canCancelContentTouches = YES;
     }
@@ -42,9 +42,12 @@
 
 @interface JSSlidingViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, strong) UIScrollView *slidingScrollView;
+@property (nonatomic, strong) SlidingScrollView *slidingScrollView;
 @property (nonatomic, strong) UIButton *invisibleCloseSliderButton;
 @property (nonatomic, assign) CGFloat sliderOpeningWidth;
+@property (assign, nonatomic) CGFloat desiredVisiblePortionOfFrontViewWhenOpen;
+@property (strong, nonatomic) UIImageView *frontViewControllerDropShadow;
+@property (strong, nonatomic) UIImageView *frontViewControllerDropShadow_right;
 
 - (void)setupSlidingScrollView;
 - (void)addInvisibleButton;
@@ -74,28 +77,102 @@
     NSAssert(backVC, @"JSSlidingViewController requires both a front and a back view controller");
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        [self setupSlidingScrollView];
-        [self setFrontViewController:frontVC animated:NO completion:nil];
-        [self setBackViewController:backVC animated:NO completion:nil];
+        _frontViewController = frontVC;
+        _backViewController = backVC;
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameWillChange:) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
     }
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupSlidingScrollView];
+    CGRect frame = self.view.bounds;
+    
+    self.backViewController.view.frame = frame;
+    [self addChildViewController:self.backViewController];
+    [self.view insertSubview:self.backViewController.view atIndex:0];
+    [self.backViewController didMoveToParentViewController:self];
+    
+    self.frontViewController.view.frame = CGRectMake(_sliderOpeningWidth, frame.origin.y, frame.size.width, frame.size.height);
+    [self addChildViewController:self.frontViewController];
+    [_slidingScrollView addSubview:self.frontViewController.view];
+    [self.frontViewController didMoveToParentViewController:self];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-}
+#pragma mark - AutoRotation
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    BOOL shouldAutorotate = NO;
+    if ([self.delegate respondsToSelector:@selector(slidingViewController:shouldAutorotateToInterfaceOrientation:)]) {
+        shouldAutorotate = [self.delegate slidingViewController:self shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    } else {
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+            shouldAutorotate = (interfaceOrientation == UIInterfaceOrientationPortrait);
+        } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            shouldAutorotate = YES;
+        }
+    }
+    return shouldAutorotate;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    NSUInteger interfaceOrientations = 0;
+    if ([self.delegate respondsToSelector:@selector(supportedInterfaceOrientationsForSlidingViewController:)]) {
+        interfaceOrientations = [self.delegate supportedInterfaceOrientationsForSlidingViewController:self];
+    } else {
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+            interfaceOrientations = UIInterfaceOrientationMaskPortrait;
+        } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            interfaceOrientations = UIInterfaceOrientationMaskAll;
+        }
+    }
+    return interfaceOrientations;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:self.desiredVisiblePortionOfFrontViewWhenOpen];
+    CGRect frame = self.view.bounds;
+    CGFloat targetOriginForSlidingScrollView = 0;
+    if (self.isOpen) {
+        targetOriginForSlidingScrollView = _sliderOpeningWidth;
+    }
+    self.slidingScrollView.contentSize = CGSizeMake(frame.size.width + _sliderOpeningWidth, frame.size.height);
+    self.frontViewControllerDropShadow.frame = CGRectMake(_sliderOpeningWidth - 20.0f, 0.0f, 20.0f, frame.size.height);
+    self.frontViewControllerDropShadow_right.frame = CGRectMake(_sliderOpeningWidth + frame.size.width, 0.0f, 20.0f, frame.size.height);
+    _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
+    _slidingScrollView.frame = CGRectMake(targetOriginForSlidingScrollView, 0, frame.size.width, frame.size.height);
+    self.frontViewController.view.frame = CGRectMake(_sliderOpeningWidth, 0, frame.size.width, frame.size.height);
+}
+
+#pragma mark - Status Bar Changes
+
+- (void)statusBarFrameWillChange:(NSNotification *)notification {
+    NSDictionary *dictionary = notification.userInfo;
+    CGRect statusbarframe = CGRectZero;
+    NSValue *rectValue = [dictionary valueForKey:UIApplicationStatusBarFrameUserInfoKey];
+    [rectValue getValue:&statusbarframe];
+    CGRect mainbounds = [[UIScreen mainScreen] bounds];
+    CGFloat targetHeight = mainbounds.size.height-statusbarframe.size.height;
+    [UIView animateWithDuration:0.25f animations:^{
+        self.slidingScrollView.contentSize = CGSizeMake(self.slidingScrollView.contentSize.width, targetHeight);
+        CGRect shadowFrame = self.frontViewControllerDropShadow.frame;
+        shadowFrame.size.height = targetHeight;
+        self.frontViewControllerDropShadow.frame = shadowFrame;
+        shadowFrame = self.frontViewControllerDropShadow_right.frame;
+        shadowFrame.size.height = targetHeight;
+        self.frontViewControllerDropShadow_right.frame = shadowFrame;
+    }];
 }
 
 #pragma mark - Controlling the Slider
 
-- (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0) {
+- (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion {
     if (_animating == NO && _isOpen && _locked == NO) {
         if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
             [self.delegate slidingViewControllerWillClose:self];
@@ -107,6 +184,10 @@
         if (animated) {
             duration1 = 0.18f;
             duration2 = 0.1f;
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                duration1 = duration1 * 1.5f;
+                duration2 = duration2 * 1.5f;
+            }
         }
         [UIView animateWithDuration: duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                  CGRect rect = _slidingScrollView.frame;
@@ -135,11 +216,12 @@
     }
 }
 
-- (void)openSlider:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0) {
+- (void)openSlider:(BOOL)animated completion:(void (^)(void))completion {
     if (_animating == NO && _isOpen == NO && _locked == NO) {
         if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillOpen:)]) {
             [self.delegate slidingViewControllerWillOpen:self];
         }
+        NSLog(@"op: %g", _sliderOpeningWidth);
         _animating = YES;
         _isOpen = YES; // Needs to be here to prevent bugs
         CGFloat duration1 = 0.0f;
@@ -147,6 +229,10 @@
         if (animated) {
             duration1 = 0.18f;
             duration2 = 0.18f;
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                duration1 = duration1 * 1.5f;
+                duration2 = duration2 * 1.5f;
+            }
         }
         [UIView animateWithDuration:duration1  delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
             CGRect aRect = _slidingScrollView.frame;
@@ -174,7 +260,7 @@
     }
 }
 
-- (void)setFrontViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0) {
+- (void)setFrontViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion {
     NSAssert(viewController, @"JSSlidingViewController requires both a front and a back view controller");
     UIViewController *newFrontViewController = viewController;
     CGRect frame = self.view.bounds;
@@ -197,7 +283,7 @@
     }];
 }
 
-- (void)setBackViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_5_0) {
+- (void)setBackViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion {
     NSAssert(viewController, @"JSSlidingViewController requires both a front and a back view controller");
     UIViewController *newBackViewController = viewController;
     newBackViewController.view.frame = self.view.bounds;
@@ -391,7 +477,7 @@
     [self setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:kDefaultVisiblePortion];
     self.slidingScrollView = [[SlidingScrollView alloc] initWithFrame:frame];
     _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
-    _slidingScrollView.contentSize = CGSizeMake(frame.size.width + _sliderOpeningWidth, frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height);
+    _slidingScrollView.contentSize = CGSizeMake(frame.size.width + _sliderOpeningWidth, frame.size.height);
     _slidingScrollView.delegate = self;
     [self.view insertSubview:_slidingScrollView atIndex:0];
     _isOpen = NO;
@@ -399,13 +485,15 @@
     _animating = NO;
     _frontViewControllerHasOpenCloseNavigationBarButton = YES;
     _allowManualSliding = YES;
-    UIImageView *frontViewControllerDropShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"frontViewControllerDropShadow.png"]];
-    frontViewControllerDropShadow.frame = CGRectMake(_sliderOpeningWidth - 20.0f, 0.0f, 20.0f, _slidingScrollView.bounds.size.height);
-    [_slidingScrollView addSubview:frontViewControllerDropShadow];
-    UIImageView *frontViewControllerDropShadow_right = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"frontViewControllerDropShadow.png"]];
-    frontViewControllerDropShadow_right.frame = CGRectMake(_sliderOpeningWidth + frame.size.width, 0.0f, 20.0f, _slidingScrollView.bounds.size.height);
-    frontViewControllerDropShadow_right.transform = CGAffineTransformMakeRotation(M_PI);
-    [_slidingScrollView addSubview:frontViewControllerDropShadow_right];
+    
+    self.frontViewControllerDropShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"frontViewControllerDropShadow.png"]];
+    self.frontViewControllerDropShadow.frame = CGRectMake(_sliderOpeningWidth - 20.0f, 0.0f, 20.0f, _slidingScrollView.bounds.size.height);
+    [_slidingScrollView addSubview:self.frontViewControllerDropShadow];
+    
+    self.frontViewControllerDropShadow_right = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"frontViewControllerDropShadow.png"]];
+    self.frontViewControllerDropShadow_right.frame = CGRectMake(_sliderOpeningWidth + frame.size.width, 0.0f, 20.0f, _slidingScrollView.bounds.size.height);
+    self.frontViewControllerDropShadow_right.transform = CGAffineTransformMakeRotation(M_PI);
+    [_slidingScrollView addSubview:self.frontViewControllerDropShadow_right];
 }
 
 #pragma mark - Convenience
@@ -430,7 +518,8 @@
 }
 
 - (void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:(CGFloat)width {
-    _sliderOpeningWidth = self.view.frame.size.width - width;
+    self.desiredVisiblePortionOfFrontViewWhenOpen = width;
+    _sliderOpeningWidth = self.view.bounds.size.width - self.desiredVisiblePortionOfFrontViewWhenOpen;
 }
 
 - (void)setLocked:(BOOL)locked {
@@ -465,6 +554,10 @@
 
 - (BOOL)isOpen {
     return _isOpen;
+}
+
+- (void)printFrame:(CGRect)frame {
+    NSLog(@"Frame: %g %g %g %g", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 @end

@@ -13,16 +13,6 @@
 
 @implementation UINavigationBar (NavBarShadow)
 
-- (void)setNeedsLayout {
-    [super setNeedsLayout];
-    if ([self viewWithTag:88888])
-        return;
-    UIImageView *shadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navBarDropShadow.png"]];
-    shadow.frame = CGRectMake(0.0f, 44.0f, 320.0f, 5.0f);
-    shadow.tag = 88888;
-    [self addSubview:shadow];
-}
-
 @end
 
 @implementation JSAppDelegate
@@ -31,10 +21,41 @@
 @synthesize viewController = _viewController;
 @synthesize frontVC, backVC;
 
+#pragma mark - JSSlidingViewControllerDelegate 
+
+- (BOOL)slidingViewController:(JSSlidingViewController *)viewController shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientationsForSlidingViewController:(JSSlidingViewController *)viewController {
+    return UIInterfaceOrientationMaskAll;
+}
+
+#pragma mark - Convenience
+
+- (void)menuButtonPressed:(id)sender {
+    if (self.viewController.isOpen == NO) {
+        [self.viewController openSlider:YES completion:nil];
+    } else {
+        [self.viewController closeSlider:YES completion:nil];
+    }
+}
+
+- (void)lockSlider {
+    self.viewController.locked = YES;
+}
+
+- (void)unlockSlider {
+    self.viewController.locked = NO;
+}
+
+#pragma mark - App Delegate
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBarBG_default.png"] forBarMetrics:UIBarMetricsDefault];
+    
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage imageNamed:@"navigationBarBG_default.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(2, 20, 2, 20)]
+                                       forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setTintColor:[UIColor brownColor]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
@@ -51,22 +72,6 @@
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;
-}
-
-- (void)menuButtonPressed:(id)sender {
-    if (self.viewController.isOpen == NO) {
-        [self.viewController openSlider:YES completion:nil];
-    } else {
-        [self.viewController closeSlider:YES completion:nil];
-    }
-}
-
-- (void)lockSlider {
-    self.viewController.locked = YES;
-}
-
-- (void)unlockSlider {
-    self.viewController.locked = NO;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
