@@ -21,6 +21,7 @@
         self.backgroundColor = [UIColor clearColor];
         self.pagingEnabled = YES;
         self.bounces = NO;
+        self.scrollsToTop = NO;
         self.showsVerticalScrollIndicator = NO;
         self.showsHorizontalScrollIndicator = NO;
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
