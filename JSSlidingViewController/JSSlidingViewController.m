@@ -202,6 +202,10 @@
         } else {
             [self closeWithSmoothAnimation:animated completion:completion];
         }
+    } else {
+        if (completion) {
+            completion();
+        }
     }
 }
 
@@ -279,6 +283,10 @@
             [self openWithBouncyAnimation:animated completion:completion];
         } else {
             [self openWithSmoothAnimation:animated completion:completion];
+        }
+    } else {
+        if (completion) {
+            completion();
         }
     }
 }
