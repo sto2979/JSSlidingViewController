@@ -192,9 +192,7 @@
 - (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion {
     [completion copy];
     if (_animating == NO && _isOpen && _locked == NO) {
-        if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
-            [self.delegate slidingViewControllerWillClose:self];
-        }
+        [self willClose];
         _isOpen = NO; // Needs to be here to prevent bugs
         _animating = YES;
         if (self.useBouncyAnimations) {
@@ -236,11 +234,9 @@
             }
             _animating = NO;
             self.view.userInteractionEnabled = YES;
+            [self didClose];
             if (completion) {
                 completion();
-            }
-            if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
-                [self.delegate slidingViewControllerDidClose:self];
             }
         }];
     }];
@@ -262,11 +258,9 @@
         }
         _animating = NO;
         self.view.userInteractionEnabled = YES;
+        [self didClose];
         if (completion) {
             completion();
-        }
-        if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
-            [self.delegate slidingViewControllerDidClose:self];
         }
     }];
 }
@@ -274,9 +268,7 @@
 - (void)openSlider:(BOOL)animated completion:(void (^)(void))completion {
     [completion copy];
     if (_animating == NO && _isOpen == NO && _locked == NO) {
-        if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillOpen:)]) {
-            [self.delegate slidingViewControllerWillOpen:self];
-        }
+        [self willOpen];
         _animating = YES;
         _isOpen = YES; // Needs to be here to prevent bugs
         if (self.useBouncyAnimations) {
@@ -317,11 +309,9 @@
             }
             _animating = NO;
             self.view.userInteractionEnabled = YES;
+            [self didOpen];
             if (completion) {
                 completion();
-            }
-            if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
-                [self.delegate slidingViewControllerDidOpen:self];
             }
         }];
     }];
@@ -345,12 +335,11 @@
         }
         _animating = NO;
         self.view.userInteractionEnabled = YES;
+        [self didOpen];
         if (completion) {
             completion();
         }
-        if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
-            [self.delegate slidingViewControllerDidOpen:self];
-        }
+        
     }];
 }
 
@@ -404,38 +393,38 @@
  
  SLIDING SCROLL VIEW DISCUSSION
  
- Nota Bene: 
- Some of these scroll view delegate method implementations may look quite strange, but 
- it has to do with the peculiarities of the timing and circumstances of UIScrollViewDelegate 
- callbacks. Numerous bugs and unusual edge cases have been accounted for via rigorous testing. 
+ Nota Bene:
+ Some of these scroll view delegate method implementations may look quite strange, but
+ it has to do with the peculiarities of the timing and circumstances of UIScrollViewDelegate
+ callbacks. Numerous bugs and unusual edge cases have been accounted for via rigorous testing.
  Edit these with extreme care!!!
  
  How It Works:
  
  1. The slidingScrollView is a container for the frontmost content. The backmost content is not a part of the slidingScrollView's hierarchy.
- The slidingScrollView has a clear background color, which masks the technique I'm using. To make it easier to see what's happening, 
+ The slidingScrollView has a clear background color, which masks the technique I'm using. To make it easier to see what's happening,
  try temporarily setting it's background color to a semi-translucent color in the -(void)setupSlidingScrollView method.
  
  2. When the slider is closed and at rest, the scroll view's frame fills the display.
  
- 3. When the slider is open and at rest, the scroll view's frame is snapped over to the right, 
+ 3. When the slider is open and at rest, the scroll view's frame is snapped over to the right,
  starting at an x origin of 262.
  
- 4. When the slider is being opened or closed and is tracking a dragging touch, the scroll view's frame fills 
- the display. 
+ 4. When the slider is being opened or closed and is tracking a dragging touch, the scroll view's frame fills
+ the display.
  
- 5a. When the slider has finished animating/decelerating to either the closed or open position, the 
+ 5a. When the slider has finished animating/decelerating to either the closed or open position, the
  UIScrollView delegate callbacks are used to determine what to do next.
- 5b. If the slider has come to rest in the open position, the scroll view's frame's x origin is set to the value 
- in #3, and an "invisible button" is added over the visible portion of the main content 
+ 5b. If the slider has come to rest in the open position, the scroll view's frame's x origin is set to the value
+ in #3, and an "invisible button" is added over the visible portion of the main content
  to catch touch events and trigger a close action.
- 5c. If the slider has come to rest in the closed position, the invisible button is removed, and the 
+ 5c. If the slider has come to rest in the closed position, the invisible button is removed, and the
  scroll view's frame once again fills the display.
  
- 6. Numerous edge cases were solved for, most of them related to what happens when touches/drags 
+ 6. Numerous edge cases were solved for, most of them related to what happens when touches/drags
  begin or end before the slider has finished decelerating (in either direction).
  
- 7a. Changes to the scroll view frame or the invisible button are also triggered by UIView touch event 
+ 7a. Changes to the scroll view frame or the invisible button are also triggered by UIView touch event
  methods like touchesBegan and touchesEnded.
  7b. Since not every touch sequence turns into a drag, responses to these touch events must perform
  some of the same functions as responses to scroll view delegate methods. This explains why there is
@@ -443,7 +432,7 @@
  
  Summary:
  
- By combining UIScrollViewDelegate methods and UIView touch event methods, I am able to mimic the slide-to-reveal 
+ By combining UIScrollViewDelegate methods and UIView touch event methods, I am able to mimic the slide-to-reveal
  navigation that is currently in-vogue, but without having to manually track touches and calculate dragging & decelerating
  animations. Apple's own implementation of UIScrollView touch tracking is infinitely smoother and richer than any
  third party library.
@@ -472,19 +461,15 @@
                     [self.invisibleCloseSliderButton removeFromSuperview];
                     self.invisibleCloseSliderButton = nil;
                 }
-                if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
-                    [self.delegate slidingViewControllerWillClose:self];
-                }
+                [self willClose];
                 _isOpen = NO;
-                if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
-                    [self.delegate slidingViewControllerDidClose:self];
-                }
+                [self didClose];
             }
         }
     }
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {    
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (_animating == NO) {
         CGPoint origin = self.frontViewController.view.frame.origin;
         origin = [_slidingScrollView convertPoint:origin toView:self.view];
@@ -502,19 +487,15 @@
                 [self.invisibleCloseSliderButton removeFromSuperview];
                 self.invisibleCloseSliderButton = nil;
             }
-            if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
-                [self.delegate slidingViewControllerWillClose:self];
-            }
+            [self willClose];
             _isOpen = NO;
-            if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
-                [self.delegate slidingViewControllerDidClose:self];
-            }
+            [self didClose];
         }
         self.view.userInteractionEnabled = YES;
     }
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {  
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     if (_isOpen == YES && _locked == NO) {
         CGRect rect = _slidingScrollView.frame;
         rect.origin.x = 0;
@@ -540,18 +521,14 @@
                 self.invisibleCloseSliderButton = nil;
             }
         } else {
-            if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillOpen:)]) {
-                [self.delegate slidingViewControllerWillOpen:self];
-            }
+            [self willOpen];
             _isOpen = YES;
-            if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
-                [self.delegate slidingViewControllerDidOpen:self];
-            }
+            [self didOpen];
         }
     }
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {   
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     if (_isOpen == YES && _locked == NO) {
         if (self.invisibleCloseSliderButton == nil) {
             [self addInvisibleButton];
@@ -560,7 +537,7 @@
         rect.origin.x = _sliderOpeningWidth;
         _slidingScrollView.frame = rect;
         _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
-    } 
+    }
     [super touchesEnded:touches withEvent:event];
 }
 
@@ -656,6 +633,38 @@
 
 - (void)printFrame:(CGRect)frame {
     NSLog(@"Frame: %g %g %g %g", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+}
+
+#pragma mark - Add/Remove Back View if Appropriate
+
+- (void)willOpen {
+    if (self.shouldTemporarilyRemoveBackViewControllerWhenClosed) {
+        [self.view insertSubview:self.backViewController.view atIndex:0];
+    }
+    if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillOpen:)]) {
+        [self.delegate slidingViewControllerWillOpen:self];
+    }
+}
+
+- (void)didOpen {
+    if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
+        [self.delegate slidingViewControllerDidOpen:self];
+    }
+}
+
+- (void)willClose {
+    if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
+        [self.delegate slidingViewControllerWillClose:self];
+    }
+}
+
+- (void)didClose {
+    if (self.shouldTemporarilyRemoveBackViewControllerWhenClosed) {
+        [self.backViewController.view removeFromSuperview];
+    }
+    if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose::)]) {
+        [self.delegate slidingViewControllerDidClose:self];
+    }
 }
 
 @end

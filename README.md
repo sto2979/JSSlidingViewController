@@ -104,6 +104,8 @@ BOOL useBouncyAnimations
 Delegate Protocol
 =============
 
+###Opening and Closing Events
+
 JSSlidingViewController also supports the following optional delegate methods, which are called whether or not the opening/closing was performed manually or programmatically:
 
 ```
@@ -112,6 +114,20 @@ JSSlidingViewController also supports the following optional delegate methods, w
 - slidingViewControllerDidOpen:
 - slidingViewControllerDidClose:
 ```
+
+###Removing the Back View When It’s Not Needed
+
+You can optionally set JSSlidingViewController to remove the backViewController’s view from the view hierarchy whenever it’s closed:
+
+```
+BOOL shouldTemporarilyRemoveBackViewControllerWhenClosed
+```
+
+Setting this property to YES will cause JSSlidingViewController to remove the backViewController’s view just after closing, and to reinsert it just before it opens again (whether or not these actions were triggered programmatically or by touch gestures). *The backViewController’s view is not released, it’s just removed from the view hierarchy, although UIKit may unload it under memory pressure.*
+
+Removing the backViewController’s view helps reduce the total number of views in the view hierarchy, and fixes bugs with apps that support **VoiceOver** accessibility.
+
+###Autorotation
 
 Lastly, you can control the interface orientation methods via two additional delegate methods (one for i0S 5 and the other for iOS 6) that are self-explanatory:
 

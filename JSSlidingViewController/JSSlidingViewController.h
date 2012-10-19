@@ -21,6 +21,7 @@
 @property (nonatomic, weak) id <JSSlidingViewControllerDelegate> delegate;
 @property (nonatomic, assign) BOOL allowManualSliding;
 @property (assign, nonatomic) BOOL useBouncyAnimations;
+@property (assign, nonatomic) BOOL shouldTemporarilyRemoveBackViewControllerWhenClosed;
 
 - (id)initWithFrontViewController:(UIViewController *)frontVC backViewController:(UIViewController *)backVC;
 - (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion;
