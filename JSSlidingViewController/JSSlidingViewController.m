@@ -578,6 +578,7 @@
     }
     self.invisibleCloseSliderButton.frame = CGRectMake(self.frontViewController.view.frame.origin.x, yOrigin, self.view.frame.size.width, self.view.frame.size.height - yOrigin);
     self.invisibleCloseSliderButton.backgroundColor = [UIColor clearColor];
+    self.invisibleCloseSliderButton.accessibilityElementsHidden = YES;
     [self.invisibleCloseSliderButton addTarget:self action:@selector(invisibleButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [_slidingScrollView addSubview:self.invisibleCloseSliderButton];
 }
