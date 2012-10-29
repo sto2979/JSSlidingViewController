@@ -668,6 +668,13 @@
     }
 }
 
+#pragma mark - Accessiblility
+
+- (BOOL)accessibilityPerformEscape {
+    [self closeSlider:YES completion:nil];
+    return YES;
+}
+
 @end
 
 
