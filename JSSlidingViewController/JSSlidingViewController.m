@@ -8,6 +8,12 @@
 
 #import "JSSlidingViewController.h"
 
+NSString * const JSSlidingViewControllerWillOpenNotification = @"JSSlidingViewControllerWillOpenNotification";
+NSString * const JSSlidingViewControllerWillCloseNotification = @"JSSlidingViewControllerWillCloseNotification";
+NSString * const JSSlidingViewControllerDidOpenNotification = @"JSSlidingViewControllerDidOpenNotification";
+NSString * const JSSlidingViewControllerDidCloseNotification = @"JSSlidingViewControllerDidCloseNotification";
+NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlidingViewControllerWillBeginDraggingNotification";
+
 @interface SlidingScrollView : UIScrollView
 
 @end
@@ -510,6 +516,9 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerWillBeginDraggingNotification object:self]];
+    
     if (_locked == NO) {
         if (_isOpen == YES) {
             CGRect rect = _slidingScrollView.frame;
@@ -645,18 +654,21 @@
     if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillOpen:)]) {
         [self.delegate slidingViewControllerWillOpen:self];
     }
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerWillOpenNotification object:self]];
 }
 
 - (void)didOpen {
     if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
         [self.delegate slidingViewControllerDidOpen:self];
     }
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerDidOpenNotification object:self]];
 }
 
 - (void)willClose {
     if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
         [self.delegate slidingViewControllerWillClose:self];
     }
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerWillCloseNotification object:self]];
 }
 
 - (void)didClose {
@@ -666,6 +678,7 @@
     if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose::)]) {
         [self.delegate slidingViewControllerDidClose:self];
     }
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerDidCloseNotification object:self]];
 }
 
 #pragma mark - Accessiblility

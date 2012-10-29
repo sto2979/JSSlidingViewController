@@ -10,6 +10,12 @@
 
 @protocol JSSlidingViewControllerDelegate;
 
+extern NSString * const JSSlidingViewControllerWillOpenNotification;
+extern NSString * const JSSlidingViewControllerWillCloseNotification;
+extern NSString * const JSSlidingViewControllerDidOpenNotification;
+extern NSString * const JSSlidingViewControllerDidCloseNotification;
+extern NSString * const JSSlidingViewControllerWillBeginDraggingNotification;
+
 @interface JSSlidingViewController : UIViewController
 
 @property (nonatomic, readonly) BOOL animating;
