@@ -675,7 +675,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     if (self.shouldTemporarilyRemoveBackViewControllerWhenClosed) {
         [self.backViewController.view removeFromSuperview];
     }
-    if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose::)]) {
+    if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidClose:)]) {
         [self.delegate slidingViewControllerDidClose:self];
     }
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerDidCloseNotification object:self]];
