@@ -38,11 +38,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
 }
 
 - (BOOL)touchesShouldCancelInContentView:(UIView *)view {
-    BOOL shouldCancel = NO;
-    if ([view isKindOfClass:[UIView class]]) {
-        shouldCancel = YES;
-    }
-    return shouldCancel;
+    return YES; // Makes it so you can swipe to close the slider.
 }
 
 @end
