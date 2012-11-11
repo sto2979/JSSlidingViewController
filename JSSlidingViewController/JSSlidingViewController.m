@@ -220,12 +220,12 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
             duration2 = duration2 * 1.5f;
         }
     }
-    [UIView animateWithDuration: duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration: duration1 delay:0 options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionOverrideInheritedDuration animations:^{
         CGRect rect = _slidingScrollView.frame;
         rect.origin.x = -10.0f;
         _slidingScrollView.frame = rect;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration: duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration: duration2 delay:0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionOverrideInheritedDuration animations:^{
             CGRect rect = _slidingScrollView.frame;
             rect.origin.x = 0;
             _slidingScrollView.frame = rect;
@@ -248,8 +248,11 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     CGFloat duration = 0;
     if (animated) {
         duration = 0.25f;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            duration = 0.4f;
+        }
     }
-    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionOverrideInheritedDuration animations:^{
         CGRect rect = _slidingScrollView.frame;
         rect.origin.x = 0;
         _slidingScrollView.frame = rect;
@@ -258,6 +261,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
             [self.invisibleCloseSliderButton removeFromSuperview];
             self.invisibleCloseSliderButton = nil;
         }
+        _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
         _animating = NO;
         self.view.userInteractionEnabled = YES;
         [self didClose];
@@ -296,12 +300,12 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
             duration2 = duration2 * 1.5f;
         }
     }
-    [UIView animateWithDuration:duration1  delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+    [UIView animateWithDuration:duration1  delay:0 options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionOverrideInheritedDuration  animations:^{
         CGRect aRect = _slidingScrollView.frame;
         aRect.origin.x = _sliderOpeningWidth + 10;
         _slidingScrollView.frame = aRect;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:duration2  delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:duration2  delay:0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionOverrideInheritedDuration animations:^{
             CGRect rect = _slidingScrollView.frame;
             rect.origin.x = _sliderOpeningWidth;
             _slidingScrollView.frame = rect;
@@ -309,6 +313,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
             if (self.invisibleCloseSliderButton == nil) {
                 [self addInvisibleButton];
             }
+            _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
             _animating = NO;
             self.view.userInteractionEnabled = YES;
             [self didOpen];
@@ -327,7 +332,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
             duration = 0.4f;
         }
     }
-    [UIView animateWithDuration:duration  delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:duration  delay:0 options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionOverrideInheritedDuration animations:^{
         CGRect rect = _slidingScrollView.frame;
         rect.origin.x = _sliderOpeningWidth;
         _slidingScrollView.frame = rect;
