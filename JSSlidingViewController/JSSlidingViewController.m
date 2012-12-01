@@ -446,6 +446,45 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
  
  */
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    // BIG NASTY BUG IN iOS 6.x --
+    // Under certain conditions, when nesting a table view inside of a scroll view,
+    // as is frequently the case when using JSSlidingViewController,
+    // scrollViewDidScroll: can be called from a scrollView without scrollViewWillBeginDragging:
+    // ever being called. Without knowing the internals of UIScrollView's implementation, the
+    // best assumption we have is that the outer most scroll view (in our case the JSSlidingViewController's
+    // slidingScrollView) does not "know" that it's scrolling (dragging/tracking methods aren't triggered
+    // properly).
+    
+    // What it Looks Like ---
+    // When scrolling a table view inside the slidingScrollView, the slider pops open and closed about 1 to 20 pixels
+    // while scrolling, but never fully opening all the way. It's unusual to say the least.
+    
+    // How to Reproduce the Bug ---
+    // 1) Nest a table view inside the slidingScrollView (it's okay if this tableview is inside of a UINavigationController).
+    // 2) Present a full-screen modal view controller while the slider is closed.
+    // 3) Dismiss the modal view controller
+    // 4) Begin scrolling again on the tableview, quickly, in a semi-diagonal swipe direction
+    //    that is 90 percent vertical.
+    // 5) Observe the left hand edge of the screen for the jittery open/close while scrolling.
+    
+    // It's hard to reproduce, but trust me, it's there. I will follow up with Apple with a radar.
+    
+    // The following code doesn't "fix" the bug per se, but it will at least
+    // make sure that the back view controller is visible if self's response to
+    // willBeginDragging hasn't yet been called.
+    
+    // December 1, 2012 ~ JTS.
+    
+    if (self.isOpen == NO) {
+        CGPoint co = scrollView.contentOffset;
+        if (co.x != self.sliderOpeningWidth) {
+            [self scrollViewWillBeginDragging:scrollView];
+        }
+    }
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (_animating == NO) {
         if (decelerate == YES) {
