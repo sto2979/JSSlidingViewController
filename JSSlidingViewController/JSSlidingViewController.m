@@ -618,6 +618,16 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
 
 #pragma mark - Convenience
 
+- (void)setFrontViewControllerHasOpenCloseNavigationBarButton:(BOOL)frontViewControllerHasOpenCloseNavigationBarButton {
+    if (_frontViewControllerHasOpenCloseNavigationBarButton != frontViewControllerHasOpenCloseNavigationBarButton) {
+        _frontViewControllerHasOpenCloseNavigationBarButton = frontViewControllerHasOpenCloseNavigationBarButton;
+        if (self.invisibleCloseSliderButton.superview) {
+            [self removeInvisibleButton];
+            [self addInvisibleButton];
+        }
+    }
+}
+
 - (void)addInvisibleButton {
     self.invisibleCloseSliderButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.invisibleCloseSliderButton.showsTouchWhenHighlighted = NO;
@@ -630,6 +640,11 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     self.invisibleCloseSliderButton.accessibilityElementsHidden = YES;
     [self.invisibleCloseSliderButton addTarget:self action:@selector(invisibleButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [_slidingScrollView addSubview:self.invisibleCloseSliderButton];
+}
+
+- (void)removeInvisibleButton {
+    [self.invisibleCloseSliderButton removeFromSuperview];
+    self.invisibleCloseSliderButton = nil;
 }
 
 - (void)invisibleButtonPressed {
