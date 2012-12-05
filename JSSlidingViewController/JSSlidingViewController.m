@@ -481,6 +481,9 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
         CGPoint co = scrollView.contentOffset;
         if (co.x != self.sliderOpeningWidth) {
             [self scrollViewWillBeginDragging:scrollView];
+            [self willOpen];
+            _isOpen = YES;
+            [self didOpen];
         }
     }
 }
@@ -569,11 +572,12 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
                 [self.invisibleCloseSliderButton removeFromSuperview];
                 self.invisibleCloseSliderButton = nil;
             }
-        } else {
-            [self willOpen];
-            _isOpen = YES;
-            [self didOpen];
         }
+//        else {
+//            [self willOpen];
+//            _isOpen = YES;
+//            [self didOpen];
+//        }
     }
 }
 
