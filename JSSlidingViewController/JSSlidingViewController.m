@@ -51,6 +51,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
 @property (assign, nonatomic) CGFloat desiredVisiblePortionOfFrontViewWhenOpen;
 @property (strong, nonatomic) UIImageView *frontViewControllerDropShadow;
 @property (strong, nonatomic) UIImageView *frontViewControllerDropShadow_right;
+@property (assign, nonatomic) BOOL isAnimatingInterfaceOrientation;
 
 - (void)setupSlidingScrollView;
 - (void)addInvisibleButton;
@@ -147,6 +148,14 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
         }
     }
     return interfaceOrientations;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    self.isAnimatingInterfaceOrientation = YES;
+    __weak JSSlidingViewController *weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        weakSelf.isAnimatingInterfaceOrientation = NO;
+    });
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -448,18 +457,20 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
-    // BIG NASTY BUG IN iOS 6.x --
+    // BIG NASTY BUG IN iOS 6.x -- December 1, 2012 ~ JTS.
     // Under certain conditions, when nesting a table view inside of a scroll view,
     // as is frequently the case when using JSSlidingViewController,
-    // scrollViewDidScroll: can be called from a scrollView without scrollViewWillBeginDragging:
-    // ever being called. Without knowing the internals of UIScrollView's implementation, the
+    // scrollViewDidScroll: can be called from the outermost scrollView without scrollViewWillBeginDragging:
+    // ever being called on that scrollView's delegate. Without knowing the internals of UIScrollView's implementation, the
     // best assumption we have is that the outer most scroll view (in our case the JSSlidingViewController's
     // slidingScrollView) does not "know" that it's scrolling (dragging/tracking methods aren't triggered
     // properly).
     
-    // What it Looks Like ---
-    // When scrolling a table view inside the slidingScrollView, the slider pops open and closed about 1 to 20 pixels
-    // while scrolling, but never fully opening all the way. It's unusual to say the least.
+    // What the Bug Looks Like ---
+    // When scrolling a table view inside the slidingScrollView, the slider may pop open and closed about 1 to 20 pixels
+    // while scrolling, but never fully opening all the way. It's unusual to say the least. It's very difficult to reproduce
+    // if your table view controller is inside a UINavigationController with a visible nav bar. Hiding the navigation bar
+    // seems to make the issue more prominent.
     
     // How to Reproduce the Bug ---
     // 1) Nest a table view inside the slidingScrollView (it's okay if this tableview is inside of a UINavigationController).
@@ -472,12 +483,14 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     // It's hard to reproduce, but trust me, it's there. I will follow up with Apple with a radar.
     
     // The following code doesn't "fix" the bug per se, but it will at least
-    // make sure that the back view controller is visible if self's response to
-    // willBeginDragging hasn't yet been called.
+    // make sure that the back view controller is visible if the back view controller's view is
+    // set to be removed from the hierarchy when the slider is closed.
     
-    // December 1, 2012 ~ JTS.
+    // Note: December 9, 2012
+    // We need to disable this bug correction during autorotation, since scrollViewDidScroll
+    // is called as the slidingScrollView updates it's layout for a new interfaceOrientation. ~ JTS.
     
-    if (self.isOpen == NO) {
+    if (self.isOpen == NO && self.isAnimatingInterfaceOrientation == NO) {
         CGPoint co = scrollView.contentOffset;
         if (co.x != self.sliderOpeningWidth) {
             [self scrollViewWillBeginDragging:scrollView];
