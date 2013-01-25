@@ -586,11 +586,6 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
                 self.invisibleCloseSliderButton = nil;
             }
         }
-//        else {
-//            [self willOpen];
-//            _isOpen = YES;
-//            [self didOpen];
-//        }
     }
 }
 

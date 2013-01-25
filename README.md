@@ -1,33 +1,34 @@
 JSSlidingViewController
+=======================
 by Jared Sinclair  -  http://www.jaredsinclair.com
 
 
 
 
-What is JSSlidingViewController ?
-=================================
+## What is JSSlidingViewController ?
 
 JSSlidingViewController is an easy way to add "slide-to-reveal" style navigation to an iPhone, iPad, or iPod Touch app. This is similar to the kind of navigation found in Facebook.app, Path.app, and many others. It's a subclass of UIViewController that uses the view controller containment methods available in iOS 5.0 or later.
 
 
-What Does it Support ?
-======================
+## What Does it Support ?
 
 * **iOS**: 5 and 6
 * **Devices**: iPhone, iPad, and iPod Touch
 * **Orientations**: All 4 interface orientations !
 
 
-What's so Great About JSSlidingViewController ?
-===============================================
+## What's so Great About JSSlidingViewController ?
 
 Unlike other attempts at "slide-to-reveal" navigation, JSSlidingViewController uses a UIScrollView to track touches. Other solutions track touches manually, which results in jaggy scrolling, unexpected behaviors, and poor flick-open/flick-closed behavior. JSSlidingViewController is much more responsive. It uses Apple's great work with scroll views to track touches closely, update views quickly, and recognize gestures more accurately. 
 
 
+## Known Issues
+
+- JSSlidingViewController does not handle status bar height changes yet. A fix for this oversight is in development.
+- There is a difficult-to-reproduce bug with nesting a UITableViewController's view inside of a UINavigationController with the navigation bar hidden. See the .m file for an extended discussion.
 
 
-How do I use JSSlidingViewController ?
-===============================================
+## How do I use JSSlidingViewController ?
 
 Include the following four files in your project:
 
@@ -56,8 +57,7 @@ JSSlidingViewController automatically adds drop shadows next to the front view c
 
 
 
-Opening and Closing The Slider
-=======================
+## Opening and Closing The Slider
 
 You can let the user open and close the sliding scroll view manually, or you can control it programmatically. The programmatic methods take optional completion blocks:
 
@@ -67,8 +67,7 @@ You can let the user open and close the sliding scroll view manually, or you can
 ```
 
 
-Options
-======
+## Options
 
 ###Locking the Slider
 
@@ -101,8 +100,7 @@ BOOL useBouncyAnimations
 ```
 
 
-Delegate Protocol
-=============
+## Delegate Protocol
 
 ###Opening and Closing Events
 
@@ -137,8 +135,7 @@ Lastly, you can control the interface orientation methods via two additional del
 ```
 
 
-In-Depth Discussion
-===================
+## In-Depth Discussion
  
 ### Nota Bene
 
@@ -166,16 +163,14 @@ By combining UIScrollViewDelegate methods and UIView touch event methods, I am a
 
 
 
-License Agreement
-=================
+## License Agreement
 
 Check the end of this doc for the license agreement. But you can use, modify, or share this pretty much as you see fit. Just include attribution in your credits!
 
 
 
 
-License Agreement for Source Code provided by Jared Sinclair
-===========================================================
+## License Agreement for Source Code provided by Jared Sinclair
 
 This software is supplied to you by Jared Sinclair in consideration of your agreement to the following terms, and your use, installation, modification or redistribution of this software constitutes acceptance of these terms. If you do not agree with these terms, please do not use, install, modify or redistribute this software.
 
