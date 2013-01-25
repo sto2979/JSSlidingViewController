@@ -114,7 +114,7 @@ JSSlidingViewController also supports the following optional delegate methods, w
 - slidingViewControllerDidClose:
 ```
 
-### NSNotifications
+## NSNotifications
 
 There are also NSNotifications that are posted for certain events. These are handy when using the delegate protocol would be infeasible:
 
@@ -126,7 +126,7 @@ JSSlidingViewControllerDidCloseNotification;
 JSSlidingViewControllerWillBeginDraggingNotification;
 ```
 
-###Removing the Back View When It’s Not Needed
+## Removing the Back View When It’s Not Needed
 
 You can optionally set JSSlidingViewController to remove the backViewController’s view from the view hierarchy whenever it’s closed:
 
@@ -138,7 +138,7 @@ Setting this property to YES will cause JSSlidingViewController to remove the ba
 
 Removing the backViewController’s view helps reduce the total number of views in the view hierarchy, and fixes bugs with apps that support **VoiceOver** accessibility.
 
-###Autorotation
+## Autorotation
 
 Lastly, you can control the interface orientation methods via two additional delegate methods (one for i0S 5 and the other for iOS 6) that are self-explanatory:
 
