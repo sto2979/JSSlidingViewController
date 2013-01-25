@@ -26,6 +26,7 @@ Unlike other attempts at "slide-to-reveal" navigation, JSSlidingViewController u
 
 - JSSlidingViewController does not handle status bar height changes yet. A fix for this oversight is in development.
 - There is a difficult-to-reproduce bug with nesting a UITableViewController's view inside of a UINavigationController with the navigation bar hidden. See the .m file for an extended discussion.
+- The "invisible button" does not behave as expected when VoiceOver is enabled.
 
 
 ## How do I use JSSlidingViewController ?
@@ -33,10 +34,10 @@ Unlike other attempts at "slide-to-reveal" navigation, JSSlidingViewController u
 Include the following four files in your project:
 
 ```
-- JSSlidingViewController.h
-- JSSlidingViewController.m
-- frontViewControllerDropShadow.png
-- frontViewControllerDropShadow@2x.png
+JSSlidingViewController.h
+JSSlidingViewController.m
+frontViewControllerDropShadow.png
+frontViewControllerDropShadow@2x.png
 ```
 
 You create a JSSlidingViewController by calling:
@@ -111,6 +112,18 @@ JSSlidingViewController also supports the following optional delegate methods, w
 - slidingViewControllerWillClose:
 - slidingViewControllerDidOpen:
 - slidingViewControllerDidClose:
+```
+
+### NSNotifications
+
+There are also NSNotifications that are posted for certain events. These are handy when using the delegate protocol would be infeasible:
+
+```
+JSSlidingViewControllerWillOpenNotification;
+JSSlidingViewControllerWillCloseNotification;
+JSSlidingViewControllerDidOpenNotification;
+JSSlidingViewControllerDidCloseNotification;
+JSSlidingViewControllerWillBeginDraggingNotification;
 ```
 
 ###Removing the Back View When It’s Not Needed
