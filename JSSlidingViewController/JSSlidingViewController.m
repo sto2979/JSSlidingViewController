@@ -523,9 +523,11 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
                     [self.invisibleCloseSliderButton removeFromSuperview];
                     self.invisibleCloseSliderButton = nil;
                 }
-                [self willClose];
-                _isOpen = NO;
-                [self didClose];
+                if (_isOpen) {
+                    [self willClose];
+                    _isOpen = NO;
+                    [self didClose];
+                }
             }
         }
     }
@@ -549,9 +551,11 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
                 [self.invisibleCloseSliderButton removeFromSuperview];
                 self.invisibleCloseSliderButton = nil;
             }
-            [self willClose];
-            _isOpen = NO;
-            [self didClose];
+            if (_isOpen) {
+                [self willClose];
+                _isOpen = NO;
+                [self didClose];
+            }
         }
         self.view.userInteractionEnabled = YES;
     }
