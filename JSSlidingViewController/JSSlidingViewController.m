@@ -108,6 +108,8 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     [self addChildViewController:self.frontViewController];
     [_slidingScrollView addSubview:self.frontViewController.view];
     [self.frontViewController didMoveToParentViewController:self];
+    
+    [self didClose]; // Fixes VO bugs with the slider being closed at launch.
 }
 
 - (void)viewWillAppear:(BOOL)animated {
