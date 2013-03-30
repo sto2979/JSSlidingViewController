@@ -84,14 +84,34 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
         _frontViewController = frontVC;
         _backViewController = backVC;
         _useBouncyAnimations = YES;
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameWillChange:) name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
+        [self addObservations];
     }
     return self;
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
+    [self removeObservations];
+}
+
+- (void)addObservations {
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(statusBarFrameWillChange:)
+                                                 name:UIApplicationWillChangeStatusBarFrameNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appWillEnterForeground:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+}
+
+- (void)removeObservations {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationWillChangeStatusBarFrameNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationWillEnterForegroundNotification
+                                                  object:nil];
 }
 
 - (void)viewDidLoad {
@@ -190,14 +210,23 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     CGRect mainbounds = [[UIScreen mainScreen] bounds];
     CGFloat targetHeight = mainbounds.size.height-statusbarframe.size.height;
     [UIView animateWithDuration:0.25f animations:^{
-        self.slidingScrollView.contentSize = CGSizeMake(self.slidingScrollView.contentSize.width, targetHeight);
-        CGRect shadowFrame = self.frontViewControllerDropShadow.frame;
-        shadowFrame.size.height = targetHeight;
-        self.frontViewControllerDropShadow.frame = shadowFrame;
-        shadowFrame = self.frontViewControllerDropShadow_right.frame;
-        shadowFrame.size.height = targetHeight;
-        self.frontViewControllerDropShadow_right.frame = shadowFrame;
+        [self updateContentSizeForViewHeight:targetHeight];
     }];
+}
+
+- (void)appWillEnterForeground:(NSNotification *)notification {
+    [self updateContentSizeForViewHeight:self.view.bounds.size.height];
+}
+
+- (void)updateContentSizeForViewHeight:(CGFloat)targetHeight {
+    self.slidingScrollView.contentSize = CGSizeMake(self.slidingScrollView.contentSize.width, targetHeight);
+    CGRect shadowFrame = self.frontViewControllerDropShadow.frame;
+    shadowFrame.size.height = targetHeight;
+    self.frontViewControllerDropShadow.frame = shadowFrame;
+    shadowFrame = self.frontViewControllerDropShadow_right.frame;
+    shadowFrame.size.height = targetHeight;
+    self.frontViewControllerDropShadow_right.frame = shadowFrame;
+
 }
 
 #pragma mark - Controlling the Slider
