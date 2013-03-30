@@ -120,6 +120,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     CGRect frame = self.view.bounds;
     
     self.backViewController.view.frame = frame;
+    self.backViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self addChildViewController:self.backViewController];
     [self.view insertSubview:self.backViewController.view atIndex:0];
     [self.backViewController didMoveToParentViewController:self];
@@ -198,17 +199,28 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     _slidingScrollView.frame = CGRectMake(targetOriginForSlidingScrollView, 0, frame.size.width, frame.size.height);
     self.frontViewController.view.frame = CGRectMake(_sliderOpeningWidth, 0, frame.size.width, frame.size.height);
     self.invisibleCloseSliderButton.frame = CGRectMake(_sliderOpeningWidth, self.invisibleCloseSliderButton.frame.origin.y, frame.size.width, frame.size.height);
+    
+    if (self.backViewController.view.superview == nil) {
+        // Update this manually, since auto-resizing won't take care of it,
+        // because it's been temporarily removed from the view hierarchy
+        CGRect backvcframe = self.backViewController.view.frame;
+        backvcframe = self.view.bounds;
+        self.backViewController.view.frame = backvcframe;
+    }
 }
 
 #pragma mark - Status Bar Changes
 
 - (void)statusBarFrameWillChange:(NSNotification *)notification {
     NSDictionary *dictionary = notification.userInfo;
-    CGRect statusbarframe = CGRectZero;
+    
+    CGRect targetStatusBarFrame = CGRectZero;
     NSValue *rectValue = [dictionary valueForKey:UIApplicationStatusBarFrameUserInfoKey];
-    [rectValue getValue:&statusbarframe];
-    CGRect mainbounds = [[UIScreen mainScreen] bounds];
-    CGFloat targetHeight = mainbounds.size.height-statusbarframe.size.height;
+    [rectValue getValue:&targetStatusBarFrame];
+    
+    CGRect screenbounds = [[UIScreen mainScreen] bounds];
+    CGFloat targetHeight = screenbounds.size.height - targetStatusBarFrame.size.height;
+    
     [UIView animateWithDuration:0.25f animations:^{
         [self updateContentSizeForViewHeight:targetHeight];
     }];
@@ -219,14 +231,28 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
 }
 
 - (void)updateContentSizeForViewHeight:(CGFloat)targetHeight {
+    
+    // Adjust the content size for the sliding scroll to the new target height
     self.slidingScrollView.contentSize = CGSizeMake(self.slidingScrollView.contentSize.width, targetHeight);
+    
+    // Manually fix the back vc's height if the view isn't visible.
+    // If it's visible, auto-resizing will correct it.
+    if (self.backViewController.view.superview == nil) {
+        CGRect backvcframe = self.backViewController.view.frame;
+        backvcframe.size.height = targetHeight;
+        self.backViewController.view.frame = backvcframe;
+    }
+    
+    // Don't fix front vc. It'll get adjusted as the scroll view's content size changes,
+    // as long as it has the right autoresizing mask (flexible height).
+
+    // Fix dropshadows (helps with translucent status bar apps).
     CGRect shadowFrame = self.frontViewControllerDropShadow.frame;
     shadowFrame.size.height = targetHeight;
     self.frontViewControllerDropShadow.frame = shadowFrame;
     shadowFrame = self.frontViewControllerDropShadow_right.frame;
     shadowFrame.size.height = targetHeight;
     self.frontViewControllerDropShadow_right.frame = shadowFrame;
-
 }
 
 #pragma mark - Controlling the Slider
@@ -417,6 +443,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     NSAssert(viewController, @"JSSlidingViewController requires both a front and a back view controller");
     UIViewController *newBackViewController = viewController;
     newBackViewController.view.frame = self.view.bounds;
+    newBackViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self addChildViewController:newBackViewController];
     [self.view insertSubview:newBackViewController.view atIndex:0];
     CGFloat duration = 0.0f;
