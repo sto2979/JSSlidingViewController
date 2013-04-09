@@ -53,4 +53,9 @@ extern NSString * const JSSlidingViewControllerWillBeginDraggingNotification;
 - (NSUInteger)supportedInterfaceOrientationsForSlidingViewController:(JSSlidingViewController *)viewController;
 - (BOOL)slidingViewController:(JSSlidingViewController *)viewController shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
+- (NSString *)localizedAccessibilityLabelForInvisibleCloseSliderButton:(JSSlidingViewController *)viewController;
+
 @end
+
+
+

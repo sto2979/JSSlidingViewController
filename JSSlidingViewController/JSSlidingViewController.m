@@ -709,9 +709,10 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     if (_frontViewControllerHasOpenCloseNavigationBarButton) {
         yOrigin = 44.0f;
     }
-    self.invisibleCloseSliderButton.frame = CGRectMake(self.frontViewController.view.frame.origin.x, yOrigin, self.view.frame.size.width, self.view.frame.size.height - yOrigin);
+    self.invisibleCloseSliderButton.frame = CGRectMake(self.frontViewController.view.frame.origin.x, yOrigin, _desiredVisiblePortionOfFrontViewWhenOpen, self.view.frame.size.height - yOrigin);
     self.invisibleCloseSliderButton.backgroundColor = [UIColor clearColor];
-    self.invisibleCloseSliderButton.accessibilityElementsHidden = YES;
+    self.invisibleCloseSliderButton.isAccessibilityElement = YES;
+    self.invisibleCloseSliderButton.accessibilityLabel = self.localizedAccessibilityLabelForInvisibleCloseSliderButton;
     [self.invisibleCloseSliderButton addTarget:self action:@selector(invisibleButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [_slidingScrollView addSubview:self.invisibleCloseSliderButton];
 }
@@ -815,6 +816,17 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
 - (BOOL)accessibilityPerformEscape {
     [self closeSlider:YES completion:nil];
     return YES;
+}
+
+- (NSString *)localizedAccessibilityLabelForInvisibleCloseSliderButton {
+    NSString *locTitle = nil;
+    if ([self.delegate respondsToSelector:@selector(localizedAccessibilityLabelForInvisibleCloseSliderButton:)]) {
+        locTitle = [self.delegate localizedAccessibilityLabelForInvisibleCloseSliderButton:self];
+    }
+    if (locTitle.length == 0) {
+        locTitle = @"Visible Edge of Main Content";
+    }
+    return locTitle;
 }
 
 @end
