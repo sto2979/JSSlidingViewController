@@ -198,7 +198,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
     _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
     _slidingScrollView.frame = CGRectMake(targetOriginForSlidingScrollView, 0, frame.size.width, frame.size.height);
     self.frontViewController.view.frame = CGRectMake(_sliderOpeningWidth, 0, frame.size.width, frame.size.height);
-    self.invisibleCloseSliderButton.frame = CGRectMake(_sliderOpeningWidth, self.invisibleCloseSliderButton.frame.origin.y, frame.size.width, frame.size.height);
+    self.invisibleCloseSliderButton.frame = CGRectMake(_sliderOpeningWidth, self.invisibleCloseSliderButton.frame.origin.y, _desiredVisiblePortionOfFrontViewWhenOpen, frame.size.height);
     
     if (self.backViewController.view.superview == nil) {
         // Update this manually, since auto-resizing won't take care of it,
