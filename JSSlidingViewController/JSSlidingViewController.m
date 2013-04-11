@@ -295,7 +295,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
             CGRect rect = _slidingScrollView.frame;
             rect.origin.x = 0;
             _slidingScrollView.frame = rect;
-        } completion:^(BOOL finished) {
+        } completion:^(BOOL finished2) {
             if (self.invisibleCloseSliderButton) {
                 [self.invisibleCloseSliderButton removeFromSuperview];
                 self.invisibleCloseSliderButton = nil;
@@ -375,7 +375,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
             CGRect rect = _slidingScrollView.frame;
             rect.origin.x = _sliderOpeningWidth;
             _slidingScrollView.frame = rect;
-        } completion:^(BOOL finished) {
+        } completion:^(BOOL finished2) {
             if (self.invisibleCloseSliderButton == nil) {
                 [self addInvisibleButton];
             }
