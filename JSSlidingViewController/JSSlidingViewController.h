@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@interface SlidingScrollView : UIScrollView
+
+@end
+
 @protocol JSSlidingViewControllerDelegate;
 
 extern NSString * const JSSlidingViewControllerWillOpenNotification;
@@ -28,6 +32,7 @@ extern NSString * const JSSlidingViewControllerWillBeginDraggingNotification;
 @property (nonatomic, assign) BOOL allowManualSliding;
 @property (assign, nonatomic) BOOL useBouncyAnimations;
 @property (assign, nonatomic) BOOL shouldTemporarilyRemoveBackViewControllerWhenClosed;
+@property (nonatomic, strong, readonly) SlidingScrollView *slidingScrollView;
 
 - (id)initWithFrontViewController:(UIViewController *)frontVC backViewController:(UIViewController *)backVC;
 - (void)closeSlider:(BOOL)animated completion:(void (^)(void))completion;

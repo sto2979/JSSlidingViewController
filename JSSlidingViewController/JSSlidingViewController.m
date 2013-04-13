@@ -14,10 +14,6 @@ NSString * const JSSlidingViewControllerDidOpenNotification = @"JSSlidingViewCon
 NSString * const JSSlidingViewControllerDidCloseNotification = @"JSSlidingViewControllerDidCloseNotification";
 NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlidingViewControllerWillBeginDraggingNotification";
 
-@interface SlidingScrollView : UIScrollView
-
-@end
-
 @implementation SlidingScrollView
 
 - (id)initWithFrame:(CGRect)frame {
@@ -45,7 +41,7 @@ NSString * const JSSlidingViewControllerWillBeginDraggingNotification = @"JSSlid
 
 @interface JSSlidingViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, strong) SlidingScrollView *slidingScrollView;
+@property (nonatomic, strong, readwrite) SlidingScrollView *slidingScrollView;
 @property (nonatomic, strong) UIButton *invisibleCloseSliderButton;
 @property (nonatomic, assign) CGFloat sliderOpeningWidth;
 @property (assign, nonatomic) CGFloat desiredVisiblePortionOfFrontViewWhenOpen;
