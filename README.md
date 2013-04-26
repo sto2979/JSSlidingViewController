@@ -24,9 +24,7 @@ Unlike other attempts at "slide-to-reveal" navigation, JSSlidingViewController u
 
 ## Known Issues
 
-- JSSlidingViewController does not handle status bar height changes yet. A fix for this oversight is in development.
 - There is a difficult-to-reproduce bug with nesting a UITableViewController's view inside of a UINavigationController with the navigation bar hidden. See the .m file for an extended discussion.
-- The "invisible button" does not behave as expected when VoiceOver is enabled.
 
 
 ## How do I use JSSlidingViewController ?
