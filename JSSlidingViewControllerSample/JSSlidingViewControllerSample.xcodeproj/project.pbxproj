@@ -374,13 +374,12 @@
 		7FB2549615918A6A0015E536 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jared Sinclair (3NH6Y8678Z)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JSSlidingViewControllerSample/JSSlidingViewControllerSample-Prefix.pch";
 				INFOPLIST_FILE = "JSSlidingViewControllerSample/JSSlidingViewControllerSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = JSSlider;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "25731918-E208-49CB-9C08-53516C89CBAF";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -389,13 +388,12 @@
 		7FB2549715918A6A0015E536 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jared Sinclair";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JSSlidingViewControllerSample/JSSlidingViewControllerSample-Prefix.pch";
 				INFOPLIST_FILE = "JSSlidingViewControllerSample/JSSlidingViewControllerSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = JSSlider;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "40F723EF-E216-466B-89A2-2331910AB12A";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
