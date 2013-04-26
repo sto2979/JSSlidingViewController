@@ -24,7 +24,7 @@ Unlike other attempts at "slide-to-reveal" navigation, JSSlidingViewController u
 
 ## Known Issues
 
-- There is a difficult-to-reproduce bug with nesting a UITableViewController's view inside of a UINavigationController with the navigation bar hidden. See the .m file for an extended discussion.
+- There is a difficult-to-reproduce bug with nesting a UITableViewController's view inside of a UINavigationController with the navigation bar hidden. See the .h file for an extended discussion.
 
 
 ## How do I use JSSlidingViewController ?
