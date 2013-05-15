@@ -456,6 +456,9 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
         [_frontViewController removeFromParentViewController];
         [newFrontViewController didMoveToParentViewController:self];
         _frontViewController = newFrontViewController;
+        if(completion) {
+            completion();
+        }
     }];
 }
 
@@ -478,6 +481,9 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
         [_backViewController removeFromParentViewController];
         [newBackViewController didMoveToParentViewController:self];
         _backViewController = newBackViewController;
+        if(completion) {
+            completion();
+        }
     }];
 }
 
