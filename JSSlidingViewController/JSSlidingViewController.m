@@ -221,8 +221,7 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
     if (self.backViewController.view.superview == nil) {
         // Update this manually, since auto-resizing won't take care of it,
         // because it's been temporarily removed from the view hierarchy
-        CGRect backvcframe = self.backViewController.view.frame;
-        backvcframe = self.view.bounds;
+        CGRect backvcframe = self.view.bounds;
         self.backViewController.view.frame = backvcframe;
     }
 }
