@@ -130,7 +130,10 @@ extern  CGFloat      const JSSlidingViewControllerDropShadowImageWidth;
 // @property (nonatomic, assign) BOOL shouldTemporarilyRemoveBackViewControllerWhenClosed;
 // Set this to YES if you want the back view controller to be removed from the view hierarchy when the
 // slider is closed. This is generally only necessary for VoiceOver reasons (to prevent VO from speaking
-// the content of the back view controller when the slider is closed. Defaults to NO.
+// the content of the back view controller when the slider is closed.
+// If the view is not removed, VoiceOver will try to speak items from the back view controller even though
+// they are not visible. If your app supports VoiceOver, I strongly recommend setting this property to YES.
+// Defaults to NO. Future versions of JSSlidingViewController may enabled this property by default.
 @property (nonatomic, assign) BOOL shouldTemporarilyRemoveBackViewControllerWhenClosed;
 
 // @property (nonatomic, assign, readonly) BOOL animating;

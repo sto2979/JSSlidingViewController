@@ -219,8 +219,26 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
     self.invisibleCloseSliderButton.frame = CGRectMake(_sliderOpeningWidth, self.invisibleCloseSliderButton.frame.origin.y, _desiredVisiblePortionOfFrontViewWhenOpen, frame.size.height);
     
     if (self.backViewController.view.superview == nil) {
-        // Update this manually, since auto-resizing won't take care of it,
-        // because it's been temporarily removed from the view hierarchy
+        /*
+         This code is what keeps the content size of the back view controller
+         in sync with its containing view's bounds changes while the view is
+         not in the view hierarchy. This typically happens when the in-call status
+         bar changes the height of the containing view's bounds.
+         
+         The back view controller is (optionally) removed from
+         the view hierarchy whenever the slider is closed. This is because of problems
+         with VoiceOver. When the slider closes and dragging/decelerating stops,
+         and if the following property is set to YES:
+         
+         BOOL shouldTemporarilyRemoveBackViewControllerWhenClosed
+         
+         the back view controller's view will be temporarily removed from
+         the view hierarchy (but not deallocated). If the view is not removed,
+         VoiceOver will try to speak items from the back view controller even though
+         they are not visible. If your app supports VoiceOver, I strongly recommend
+         setting this property to YES. Future versions of JSSlidingViewController
+         may enabled this property by default.
+         */
         CGRect backvcframe = self.view.bounds;
         self.backViewController.view.frame = backvcframe;
     }
