@@ -48,6 +48,7 @@ NSString *  const JSSlidingViewControllerDidCloseNotification               = @"
 NSString *  const JSSlidingViewControllerWillBeginDraggingNotification      = @"JSSlidingViewControllerWillBeginDraggingNotification";
 CGFloat     const JSSlidingViewControllerDefaultVisibleFrontPortionWhenOpen = 58.0f;
 CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20.0f;
+CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20.0f;
 
 @implementation SlidingScrollView
 
@@ -76,17 +77,18 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
 
 @interface JSSlidingViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, assign)               CGFloat                 sliderOpeningWidth;
-@property (nonatomic, assign)               CGFloat                 desiredVisiblePortionOfFrontViewWhenOpen;
-@property (nonatomic, strong)               UIButton *              invisibleCloseSliderButton;
-@property (nonatomic, strong)               UIImageView *           frontViewControllerDropShadow;
-@property (nonatomic, strong)               UIImageView *           frontViewControllerDropShadow_right;
-@property (nonatomic, assign)               BOOL                    isAnimatingInterfaceOrientation;
-@property (nonatomic, assign, readwrite)    BOOL                    animating;
-@property (nonatomic, assign, readwrite)    BOOL                    isOpen;
-@property (nonatomic, strong, readwrite)    UIViewController *      frontViewController;
-@property (nonatomic, strong, readwrite)    UIViewController *      backViewController;
-@property (nonatomic, strong, readwrite)    SlidingScrollView *     slidingScrollView;
+@property (nonatomic, assign)               CGFloat                         sliderOpeningWidth;
+@property (nonatomic, assign)               CGFloat                         desiredVisiblePortionOfFrontViewWhenOpen;
+@property (nonatomic, strong)               UIButton *                      invisibleCloseSliderButton;
+@property (nonatomic, strong)               UIImageView *                   frontViewControllerDropShadow;
+@property (nonatomic, strong)               UIImageView *                   frontViewControllerDropShadow_right;
+@property (nonatomic, assign)               BOOL                            isAnimatingInterfaceOrientation;
+@property (nonatomic, assign, readwrite)    BOOL                            animating;
+@property (nonatomic, assign, readwrite)    BOOL                            isOpen;
+@property (nonatomic, strong, readwrite)    UIViewController *              frontViewController;
+@property (nonatomic, strong, readwrite)    UIViewController *              backViewController;
+@property (nonatomic, strong, readwrite)    SlidingScrollView *             slidingScrollView;
+@property (nonatomic, strong)               UIInterpolatingMotionEffect *   motionEffect;
 
 @end
 
@@ -102,6 +104,7 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
         _frontViewController = frontVC;
         _backViewController = backVC;
         _useBouncyAnimations = YES;
+        _useParallaxMotionEffect = YES;
         [self addObservations];
     }
     return self;
@@ -451,6 +454,34 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
     }];
 }
 
+#pragma mark - Parallax Motion Effect
+
+- (void)setUseParallaxMotionEffect:(BOOL)useMotionEffect {
+    _useParallaxMotionEffect = useMotionEffect;
+    if (self.useParallaxMotionEffect && self.isOpen) {
+        [self addParallaxMotionEffect];
+    } else if (!self.useParallaxMotionEffect) {
+        [self removeParallaxMotionEffect];
+    }
+}
+
+- (void)addParallaxMotionEffect {
+    if (!self.motionEffect) {
+        self.motionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        self.motionEffect.minimumRelativeValue = @(-1 * JSSlidingViewControllerMotionEffectMinMaxRelativeValue);
+        self.motionEffect.maximumRelativeValue = @(JSSlidingViewControllerMotionEffectMinMaxRelativeValue);
+    }
+    [self.frontViewController.view addMotionEffect:self.motionEffect];
+    [self.frontViewControllerDropShadow addMotionEffect:self.motionEffect];
+    [self.frontViewControllerDropShadow_right addMotionEffect:self.motionEffect];
+}
+
+- (void)removeParallaxMotionEffect {
+    [self.frontViewController.view removeMotionEffect:self.motionEffect];
+    [self.frontViewControllerDropShadow removeMotionEffect:self.motionEffect];
+    [self.frontViewControllerDropShadow_right removeMotionEffect:self.motionEffect];
+}
+
 #pragma mark - Front & Back View Controller Changes
 
 - (void)setFrontViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion {
@@ -468,11 +499,17 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
     [UIView animateWithDuration:duration animations:^{
         newFrontViewController.view.alpha = 1.0f;
     } completion:^(BOOL finished) {
+        if (self.useParallaxMotionEffect) {
+            [self removeParallaxMotionEffect];
+        }
         [_frontViewController willMoveToParentViewController:nil];
         [_frontViewController.view removeFromSuperview];
         [_frontViewController removeFromParentViewController];
         [newFrontViewController didMoveToParentViewController:self];
         _frontViewController = newFrontViewController;
+        if (self.useParallaxMotionEffect && self.isOpen) {
+            [self addParallaxMotionEffect];
+        }
         if(completion) {
             completion();
         }
@@ -520,12 +557,18 @@ CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20
     if ([self.delegate respondsToSelector:@selector(slidingViewControllerDidOpen:)]) {
         [self.delegate slidingViewControllerDidOpen:self];
     }
+    if (self.useParallaxMotionEffect) {
+        [self addParallaxMotionEffect];
+    }
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerDidOpenNotification object:self]];
 }
 
 - (void)willClose {
     if ([self.delegate respondsToSelector:@selector(slidingViewControllerWillClose:)]) {
         [self.delegate slidingViewControllerWillClose:self];
+    }
+    if (self.useParallaxMotionEffect) {
+        [self removeParallaxMotionEffect];
     }
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerWillCloseNotification object:self]];
 }

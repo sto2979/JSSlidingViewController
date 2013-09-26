@@ -127,6 +127,11 @@ extern  CGFloat      const JSSlidingViewControllerDropShadowImageWidth;
 // after a manual change (only programmatic open/close animations).
 @property (nonatomic, assign) BOOL useBouncyAnimations;
 
+// @property (nonatomic, assign) BOOL useParallaxMotionEffect;
+// Set this to NO if you don't want the front view controller to move in response to lateral device motion when
+// the slider is open. Defaults to YES.
+@property (nonatomic, assign) BOOL useParallaxMotionEffect;
+
 // @property (nonatomic, assign) BOOL shouldTemporarilyRemoveBackViewControllerWhenClosed;
 // Set this to YES if you want the back view controller to be removed from the view hierarchy when the
 // slider is closed. This is generally only necessary for VoiceOver reasons (to prevent VO from speaking
