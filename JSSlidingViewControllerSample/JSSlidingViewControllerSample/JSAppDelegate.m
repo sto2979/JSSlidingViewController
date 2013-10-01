@@ -54,9 +54,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    [[UINavigationBar appearance] setBackgroundImage:[[UIImage imageNamed:@"navigationBarBG_default.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(2, 20, 2, 20)]
-                                       forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setTintColor:[UIColor brownColor]];
+    if ([[[UINavigationBar alloc] init] respondsToSelector:@selector(setBarTintColor:)]) {
+        [[UINavigationBar appearance] setBarTintColor:[UIColor darkGrayColor]];
+        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    }
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     
@@ -68,6 +69,7 @@
     
     self.viewController = [[JSSlidingViewController alloc] initWithFrontViewController:navCont backViewController:self.backVC];
     self.viewController.delegate = self;
+    self.viewController.useParallaxMotionEffect = YES;
     
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

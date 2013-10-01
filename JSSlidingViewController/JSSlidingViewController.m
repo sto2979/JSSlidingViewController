@@ -104,7 +104,9 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
         _frontViewController = frontVC;
         _backViewController = backVC;
         _useBouncyAnimations = YES;
-        _useParallaxMotionEffect = YES;
+        _showsDropShadows = YES;
+        _leftShadowImage = [UIImage imageNamed:@"frontViewControllerDropShadow.png"];
+        _leftShadowWidth = JSSlidingViewControllerDropShadowImageWidth;
         [self addObservations];
     }
     return self;
@@ -214,8 +216,23 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
         targetOriginForSlidingScrollView = _sliderOpeningWidth;
     }
     self.slidingScrollView.contentSize = CGSizeMake(frame.size.width + _sliderOpeningWidth, frame.size.height);
-    self.frontViewControllerDropShadow.frame = CGRectMake(_sliderOpeningWidth - JSSlidingViewControllerDropShadowImageWidth, 0.0f, JSSlidingViewControllerDropShadowImageWidth, frame.size.height);
-    self.frontViewControllerDropShadow_right.frame = CGRectMake(_sliderOpeningWidth + frame.size.width, 0.0f, JSSlidingViewControllerDropShadowImageWidth, frame.size.height);
+    
+    if (self.showsDropShadows) {
+        self.frontViewControllerDropShadow.hidden = NO;
+        self.frontViewControllerDropShadow_right.hidden = NO;
+        self.frontViewControllerDropShadow.frame = CGRectMake(_sliderOpeningWidth - _leftShadowWidth,
+                                                              0.0f,
+                                                              _leftShadowWidth,
+                                                              frame.size.height);
+        self.frontViewControllerDropShadow_right.frame = CGRectMake(_sliderOpeningWidth + frame.size.width,
+                                                                    0.0f,
+                                                                    _leftShadowWidth,
+                                                                    frame.size.height);
+    } else {
+        self.frontViewControllerDropShadow.hidden = YES;
+        self.frontViewControllerDropShadow_right.hidden = YES;
+    }
+    
     _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
     _slidingScrollView.frame = CGRectMake(targetOriginForSlidingScrollView, 0, frame.size.width, frame.size.height);
     self.frontViewController.view.frame = CGRectMake(_sliderOpeningWidth, 0, frame.size.width, frame.size.height);
@@ -284,13 +301,20 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     // Don't fix front vc. It'll get adjusted as the scroll view's content size changes,
     // as long as it has the right autoresizing mask (flexible height).
 
-    // Fix dropshadows (helps with translucent status bar apps).
-    CGRect shadowFrame = self.frontViewControllerDropShadow.frame;
-    shadowFrame.size.height = targetHeight;
-    self.frontViewControllerDropShadow.frame = shadowFrame;
-    shadowFrame = self.frontViewControllerDropShadow_right.frame;
-    shadowFrame.size.height = targetHeight;
-    self.frontViewControllerDropShadow_right.frame = shadowFrame;
+    if (self.showsDropShadows) {
+        self.frontViewControllerDropShadow.hidden = NO;
+        self.frontViewControllerDropShadow_right.hidden = NO;
+        // Fix dropshadows (helps with translucent status bar apps).
+        CGRect shadowFrame = self.frontViewControllerDropShadow.frame;
+        shadowFrame.size.height = targetHeight;
+        self.frontViewControllerDropShadow.frame = shadowFrame;
+        shadowFrame = self.frontViewControllerDropShadow_right.frame;
+        shadowFrame.size.height = targetHeight;
+        self.frontViewControllerDropShadow_right.frame = shadowFrame;
+    } else {
+        self.frontViewControllerDropShadow.hidden = YES;
+        self.frontViewControllerDropShadow_right.hidden = YES;
+    }
 }
 
 #pragma mark - Controlling the Slider
@@ -456,30 +480,44 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
 
 #pragma mark - Parallax Motion Effect
 
+- (BOOL)motionEffectsSupported {
+    return ([UIMotionEffect class] != nil);
+}
+
 - (void)setUseParallaxMotionEffect:(BOOL)useMotionEffect {
-    _useParallaxMotionEffect = useMotionEffect;
-    if (self.useParallaxMotionEffect && self.isOpen) {
-        [self addParallaxMotionEffect];
-    } else if (!self.useParallaxMotionEffect) {
-        [self removeParallaxMotionEffect];
+    if ([self motionEffectsSupported]) {
+        _useParallaxMotionEffect = useMotionEffect;
+        if (self.useParallaxMotionEffect && self.isOpen) {
+            [self addParallaxMotionEffect];
+        } else if (!self.useParallaxMotionEffect) {
+            [self removeParallaxMotionEffect];
+        }
     }
 }
 
 - (void)addParallaxMotionEffect {
-    if (!self.motionEffect) {
-        self.motionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        self.motionEffect.minimumRelativeValue = @(-1 * JSSlidingViewControllerMotionEffectMinMaxRelativeValue);
-        self.motionEffect.maximumRelativeValue = @(JSSlidingViewControllerMotionEffectMinMaxRelativeValue);
+    if ([self motionEffectsSupported]) {
+        if (!self.motionEffect) {
+            self.motionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+            self.motionEffect.minimumRelativeValue = @(-1 * JSSlidingViewControllerMotionEffectMinMaxRelativeValue);
+            self.motionEffect.maximumRelativeValue = @(JSSlidingViewControllerMotionEffectMinMaxRelativeValue);
+        }
+        [self.frontViewController.view addMotionEffect:self.motionEffect];
+        if (self.showsDropShadows) {
+            [self.frontViewControllerDropShadow addMotionEffect:self.motionEffect];
+            [self.frontViewControllerDropShadow_right addMotionEffect:self.motionEffect];
+        }
     }
-    [self.frontViewController.view addMotionEffect:self.motionEffect];
-    [self.frontViewControllerDropShadow addMotionEffect:self.motionEffect];
-    [self.frontViewControllerDropShadow_right addMotionEffect:self.motionEffect];
 }
 
 - (void)removeParallaxMotionEffect {
-    [self.frontViewController.view removeMotionEffect:self.motionEffect];
-    [self.frontViewControllerDropShadow removeMotionEffect:self.motionEffect];
-    [self.frontViewControllerDropShadow_right removeMotionEffect:self.motionEffect];
+    if ([self motionEffectsSupported]) {
+        [self.frontViewController.view removeMotionEffect:self.motionEffect];
+        if (self.showsDropShadows) {
+            [self.frontViewControllerDropShadow removeMotionEffect:self.motionEffect];
+            [self.frontViewControllerDropShadow_right removeMotionEffect:self.motionEffect];
+        }
+    }
 }
 
 #pragma mark - Front & Back View Controller Changes
@@ -752,14 +790,22 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     _frontViewControllerHasOpenCloseNavigationBarButton = YES;
     _allowManualSliding = YES;
     
-    self.frontViewControllerDropShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"frontViewControllerDropShadow.png"]];
-    self.frontViewControllerDropShadow.frame = CGRectMake(_sliderOpeningWidth - JSSlidingViewControllerDropShadowImageWidth, 0.0f, JSSlidingViewControllerDropShadowImageWidth, _slidingScrollView.bounds.size.height);
-    [_slidingScrollView addSubview:self.frontViewControllerDropShadow];
-    
-    self.frontViewControllerDropShadow_right = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"frontViewControllerDropShadow.png"]];
-    self.frontViewControllerDropShadow_right.frame = CGRectMake(_sliderOpeningWidth + frame.size.width, 0.0f, JSSlidingViewControllerDropShadowImageWidth, _slidingScrollView.bounds.size.height);
-    self.frontViewControllerDropShadow_right.transform = CGAffineTransformMakeRotation(M_PI);
-    [_slidingScrollView addSubview:self.frontViewControllerDropShadow_right];
+    if (self.showsDropShadows) {
+        self.frontViewControllerDropShadow = [[UIImageView alloc] initWithImage:self.leftShadowImage];
+        self.frontViewControllerDropShadow.frame = CGRectMake(_sliderOpeningWidth - _leftShadowWidth,
+                                                              0.0f,
+                                                              _leftShadowWidth,
+                                                              _slidingScrollView.bounds.size.height);
+        [_slidingScrollView addSubview:self.frontViewControllerDropShadow];
+        
+        self.frontViewControllerDropShadow_right = [[UIImageView alloc] initWithImage:self.leftShadowImage];
+        self.frontViewControllerDropShadow_right.frame = CGRectMake(_sliderOpeningWidth + frame.size.width,
+                                                                    0.0f,
+                                                                    _leftShadowWidth,
+                                                                    _slidingScrollView.bounds.size.height);
+        self.frontViewControllerDropShadow_right.transform = CGAffineTransformMakeRotation(M_PI);
+        [_slidingScrollView addSubview:self.frontViewControllerDropShadow_right];
+    }
 }
 
 - (void)setFrontViewControllerHasOpenCloseNavigationBarButton:(BOOL)frontViewControllerHasOpenCloseNavigationBarButton {
@@ -845,6 +891,32 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
         locTitle = @"Visible Edge of Main Content";
     }
     return locTitle;
+}
+
+#pragma mark - Shadow Image Logic
+
+- (void)setLeftShadowImage:(UIImage *)leftShadowImage {
+    if (_leftShadowImage != leftShadowImage && leftShadowImage != nil) {
+        _leftShadowImage = leftShadowImage;
+        [self.frontViewControllerDropShadow setImage:leftShadowImage];
+        [self.frontViewControllerDropShadow_right setImage:leftShadowImage];
+    }
+}
+
+- (void)setLeftShadowWidth:(CGFloat)leftShadowWidth {
+    if (_leftShadowWidth != leftShadowWidth) {
+        _leftShadowWidth = leftShadowWidth;
+        [self updateInterface];
+    }
+}
+
+- (void)setShowsDropShadows:(BOOL)showsDropShadows {
+    if (_showsDropShadows != showsDropShadows) {
+        _showsDropShadows = showsDropShadows;
+        self.frontViewControllerDropShadow.hidden = !showsDropShadows;
+        self.frontViewControllerDropShadow_right.hidden = !showsDropShadows;
+        [self updateInterface];
+    }
 }
 
 @end

@@ -26,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"texture_cardstock.png"]];
+    self.view.backgroundColor = [UIColor colorWithRed:0.2 green:0.23 blue:0.25 alpha:1.0];
 }
 
 - (void)viewDidUnload

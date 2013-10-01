@@ -47,15 +47,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if ([self.myTableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        self.myTableView.separatorInset = UIEdgeInsetsZero;
+    }
     self.navigationItem.title = @"Front View Controller";
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Front" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed)];
-    UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [customButton setBackgroundImage:[UIImage imageNamed:@"navigationBar_menuButton_normal.png"] forState:UIControlStateNormal];
-    [customButton setBackgroundImage:[UIImage imageNamed:@"navigationBar_menuButton_highlighted.png"] forState:UIControlStateHighlighted];
-    customButton.frame = CGRectMake(0, 0, 48, 30);
-    [customButton addTarget:self action:@selector(menuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"texture_creamPaper.png"]];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Burger" style:UIBarButtonItemStylePlain target:self action:@selector(menuButtonPressed:)];
+    self.view.backgroundColor = [UIColor colorWithRed:1.0 green:0.995 blue:0.990 alpha:1.0];
 }
 
 - (void)backButtonPressed {
@@ -100,8 +98,9 @@
     UITableViewCell *cell = [self.myTableView dequeueReusableCellWithIdentifier:@"dualLabelCell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"dualLabelCell"];
+        cell.backgroundColor = [UIColor colorWithRed:1.0 green:0.995 blue:0.990 alpha:1.0];
         cell.backgroundView = [[UIView alloc] init];
-        cell.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"texture_creamPaper.png"]];
+        cell.backgroundView.backgroundColor = [UIColor colorWithRed:1.0 green:0.995 blue:0.990 alpha:1.0];
     }
     cell.textLabel.text = [NSString stringWithFormat:@"Detail Row %i", indexPath.row + 1];
     return cell;

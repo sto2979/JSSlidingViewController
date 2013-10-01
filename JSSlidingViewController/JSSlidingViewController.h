@@ -165,6 +165,21 @@ extern  CGFloat      const JSSlidingViewControllerDropShadowImageWidth;
 // See the protocol desription below. All delegate methods are optional.
 @property (nonatomic, weak) id<JSSlidingViewControllerDelegate> delegate;
 
+// @property (strong, nonatomic) UIImage *leftShadowImage;
+// The shadow that appears on the lefthand edge of the front view controller.
+// This image will be flipped horizontally and re-used as the right shadow (which is
+// only visible if bouncing is enabled, and even then only very briefly).
+@property (strong, nonatomic) UIImage *leftShadowImage;
+
+// @property (assign, nonatomic) CGFloat leftShadowWidth;
+// This is the width of the shadow on the lefthand edge of the front view controller.
+@property (assign, nonatomic) CGFloat leftShadowWidth;
+
+// @property (assign, nonatomic) BOOL showsDropShadows;
+// Set this to NO if you want no shadow at all on either side of the front view controller.
+// Defaults to YES.
+@property (assign, nonatomic) BOOL showsDropShadows;
+
 // - (id)initWithFrontViewController:(UIViewController *)frontVC backViewController:(UIViewController *)backVC;
 // The designated initializer. Both front and back view controllers are required or an exception will be thrown.
 - (id)initWithFrontViewController:(UIViewController *)frontVC backViewController:(UIViewController *)backVC;
