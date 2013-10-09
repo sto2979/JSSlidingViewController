@@ -919,6 +919,25 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     }
 }
 
+#pragma mark - iOS 7 Status Bar Management
+
+- (UIViewController *)childViewControllerForStatusBarHidden {
+    if (self.frontViewController != nil) {
+        return self.frontViewController;
+    }
+    
+    return nil;
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    if (self.frontViewController != nil) {
+        return self.frontViewController;
+    }
+    
+    return nil;
+}
+
 @end
 
 
