@@ -85,6 +85,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
 @property (nonatomic, assign)               BOOL                            isAnimatingInterfaceOrientation;
 @property (nonatomic, assign, readwrite)    BOOL                            animating;
 @property (nonatomic, assign, readwrite)    BOOL                            isOpen;
+@property (nonatomic, assign, readwrite)    BOOL                            isAdjustingContentSize;
 @property (nonatomic, strong, readwrite)    UIViewController *              frontViewController;
 @property (nonatomic, strong, readwrite)    UIViewController *              backViewController;
 @property (nonatomic, strong, readwrite)    SlidingScrollView *             slidingScrollView;
@@ -215,7 +216,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     if (self.isOpen) {
         targetOriginForSlidingScrollView = _sliderOpeningWidth;
     }
-    self.slidingScrollView.contentSize = CGSizeMake(frame.size.width + _sliderOpeningWidth, frame.size.height);
+    [self setNewContentSize:CGSizeMake(frame.size.width + _sliderOpeningWidth, frame.size.height)];
     
     if (self.showsDropShadows) {
         self.frontViewControllerDropShadow.hidden = NO;
@@ -264,6 +265,14 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     }
 }
 
+#pragma mark - Adjusting Content Size
+
+- (void)setNewContentSize:(CGSize)size {
+    [self setIsAdjustingContentSize:YES];
+    [self.slidingScrollView setContentSize:size];
+    [self setIsAdjustingContentSize:NO];
+}
+
 #pragma mark - Status Bar Changes
 
 - (void)statusBarFrameWillChange:(NSNotification *)notification {
@@ -288,7 +297,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
 - (void)updateContentSizeForViewHeight:(CGFloat)targetHeight {
     
     // Adjust the content size for the sliding scroll to the new target height
-    self.slidingScrollView.contentSize = CGSizeMake(self.slidingScrollView.contentSize.width, targetHeight);
+    [self setNewContentSize:CGSizeMake(self.slidingScrollView.contentSize.width, targetHeight)];
     
     // Manually fix the back vc's height if the view isn't visible.
     // If it's visible, auto-resizing will correct it.
@@ -655,10 +664,10 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     // set to be removed from the hierarchy when the slider is closed.
     
     // Note: December 9, 2012
-    // We need to disable this bug correction during autorotation, since scrollViewDidScroll
+    // We need to disable this bug correction during autorotation or content size adjustments, since scrollViewDidScroll
     // is called as the slidingScrollView updates it's layout for a new interfaceOrientation. ~ JTS.
     
-    if (self.isOpen == NO && self.isAnimatingInterfaceOrientation == NO) {
+    if (self.isOpen == NO && self.isAnimatingInterfaceOrientation == NO && self.isAdjustingContentSize == NO) {
         CGPoint co = scrollView.contentOffset;
         if (co.x != self.sliderOpeningWidth) {
             [self scrollViewWillBeginDragging:scrollView];
@@ -781,7 +790,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     [self setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:JSSlidingViewControllerDefaultVisibleFrontPortionWhenOpen];
     self.slidingScrollView = [[SlidingScrollView alloc] initWithFrame:frame];
     _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
-    _slidingScrollView.contentSize = CGSizeMake(frame.size.width + _sliderOpeningWidth, frame.size.height);
+    [self setNewContentSize:CGSizeMake(frame.size.width + _sliderOpeningWidth, frame.size.height)];
     _slidingScrollView.delegate = self;
     [self.view insertSubview:_slidingScrollView atIndex:0];
     _isOpen = NO;
