@@ -12,7 +12,7 @@ JSSlidingViewController is an easy way to add "slide-to-reveal" style navigation
 
 ## What Does it Support ?
 
-* **iOS**: 5 and 6
+* **iOS**: 5, 6, and 7.
 * **Devices**: iPhone, iPad, and iPod Touch
 * **Orientations**: All 4 interface orientations !
 
@@ -24,7 +24,7 @@ Unlike other attempts at "slide-to-reveal" navigation, JSSlidingViewController u
 
 ## Known Issues
 
-- There is a difficult-to-reproduce bug with nesting a UITableViewController's view inside of a UINavigationController with the navigation bar hidden. See the .h file for an extended discussion.
+- There is a difficult-to-reproduce bug with nesting a UITableViewController's view inside of a UINavigationController with the navigation bar hidden. See the .h file for an extended discussion. You probably won’t be affected by this bug.
 
 
 ## How do I use JSSlidingViewController ?
@@ -68,7 +68,7 @@ You can let the user open and close the sliding scroll view manually, or you can
 
 ## Options
 
-###Locking the Slider
+### Locking the Slider
 
 You can temporarily disable all opening or closing (either via touches or programmatically) by setting the following property:
 
@@ -82,7 +82,7 @@ You can disable just manual sliding with:
 BOOL allowManualSliding;
 ```
 
-###Visible Portion of the Front View Controller
+### Visible Portion of the Front View Controller
 
 You can set the width of the visible portion of the front view controller that is seen when the sliding scroll view is all the way open. It defaults to 58 points, but you can change it with:
 
@@ -90,13 +90,36 @@ You can set the width of the visible portion of the front view controller that i
 -(void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:
 ```
 
-###Animation Styles: Bouncy or Not?
+### Animation Styles: Bouncy or Not?
 
 By default, JSSlidingViewController uses a “bouncy” animation style when the slider is opened/closed programmatically. You can turn this off in favor of a smooth animation style via the following:
 
 ```
 BOOL useBouncyAnimations
 ```
+
+### Drop Shadows
+
+You can edit the drop shadows that are shown on either side of the front view controller via three properties:
+
+```
+@property (assign, nonatomic) BOOL showsDropShadows;
+@property (assign, nonatomic) CGFloat leftShadowWidth;
+@property (strong, nonatomic) UIImage *leftShadowImage;
+```
+
+The image used for the left shadow is re-used for the right shadow (flipped with a transform). If you like the built-in shadows, you don’t need to make any adjustments to these properties.
+
+
+### UIMotionEffects (iOS 7 Only)
+
+You can optionally enable a horizontal parallax motion effect on the front view controller via the following property:
+
+```
+@property (nonatomic, assign) BOOL useParallaxMotionEffect;
+```
+
+This effect is only active when the slider is open.
 
 
 ## Delegate Protocol
@@ -138,7 +161,7 @@ Removing the backViewController’s view helps reduce the total number of views 
 
 ## Autorotation
 
-Lastly, you can control the interface orientation methods via two additional delegate methods (one for i0S 5 and the other for iOS 6) that are self-explanatory:
+Lastly, you can control the interface orientation methods via two additional delegate methods (one for i0S 5 and the other for iOS 6+) that are self-explanatory:
 
 ```
 -(NSUInteger)supportedInterfaceOrientationsForSlidingViewController:
