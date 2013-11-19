@@ -46,7 +46,7 @@ NSString *  const JSSlidingViewControllerWillCloseNotification              = @"
 NSString *  const JSSlidingViewControllerDidOpenNotification                = @"JSSlidingViewControllerDidOpenNotification";
 NSString *  const JSSlidingViewControllerDidCloseNotification               = @"JSSlidingViewControllerDidCloseNotification";
 NSString *  const JSSlidingViewControllerWillBeginDraggingNotification      = @"JSSlidingViewControllerWillBeginDraggingNotification";
-CGFloat     const JSSlidingViewControllerDefaultVisibleFrontPortionWhenOpen = 58.0f;
+CGFloat     const JSSlidingViewControllerDefaultVisibleFrontPortionWhenOpen = 56.0f;
 CGFloat     const JSSlidingViewControllerDropShadowImageWidth               = 20.0f;
 CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20.0f;
 
@@ -57,7 +57,6 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     if (self) {
         self.clipsToBounds = NO; // So that dropshadow along the sides of the frontViewController still appear when the slider is open.
         self.backgroundColor = [UIColor clearColor];
-        self.pagingEnabled = YES;
         self.bounces = NO;
         self.scrollsToTop = NO;
         self.showsVerticalScrollIndicator = NO;
@@ -678,7 +677,42 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     }
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    
+    // On iOS 6 and 7, UIScrollViews when:
+    //    1) paging is enabled
+    //    2) the contentSize.width to frame.size.width ratio is < 1.5
+    // Just touching the scroll view can trigger an intrinic contentOffset animation.
+    // Thus, we must only enable paging while the user is actively scrolling.
+    scrollView.pagingEnabled = YES;
+    
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerWillBeginDraggingNotification object:self]];
+    
+    if (_locked == NO) {
+        if (_isOpen == YES) {
+            CGRect rect = _slidingScrollView.frame;
+            rect.origin.x = 0;
+            _slidingScrollView.frame = rect;
+            _slidingScrollView.contentOffset = CGPointMake(0, 0);
+            if (self.invisibleCloseSliderButton) {
+                [self.invisibleCloseSliderButton removeFromSuperview];
+                self.invisibleCloseSliderButton = nil;
+            }
+        }
+    }
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    
+    if (decelerate == NO) {
+        // On iOS 6 and 7, UIScrollViews when:
+        //    1) paging is enabled
+        //    2) the contentSize.width to frame.size.width ratio is < 1.5
+        // Just touching the scroll view can trigger an intrinic contentOffset animation.
+        // Thus, we must only enable paging while the user is actively scrolling.
+        scrollView.pagingEnabled = NO;
+    }
+    
     if (_animating == NO) {
         if (decelerate == YES) {
             // We'll handle the rest after it's done decelerating...
@@ -711,6 +745,14 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    
+    // On iOS 6 and 7, UIScrollViews when:
+    //    1) paging is enabled
+    //    2) the contentSize.width to frame.size.width ratio is < 1.5
+    // Just touching the scroll view can trigger an intrinic contentOffset animation.
+    // Thus, we must only enable paging while the user is actively scrolling.
+    scrollView.pagingEnabled = NO;
+    
     if (_animating == NO) {
         CGPoint origin = self.frontViewController.view.frame.origin;
         origin = [_slidingScrollView convertPoint:origin toView:self.view];
@@ -750,24 +792,6 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
         }
     }
     [super touchesBegan:touches withEvent:event];
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    
-    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:JSSlidingViewControllerWillBeginDraggingNotification object:self]];
-    
-    if (_locked == NO) {
-        if (_isOpen == YES) {
-            CGRect rect = _slidingScrollView.frame;
-            rect.origin.x = 0;
-            _slidingScrollView.frame = rect;
-            _slidingScrollView.contentOffset = CGPointMake(0, 0);
-            if (self.invisibleCloseSliderButton) {
-                [self.invisibleCloseSliderButton removeFromSuperview];
-                self.invisibleCloseSliderButton = nil;
-            }
-        }
-    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
