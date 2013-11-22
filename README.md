@@ -84,7 +84,9 @@ BOOL allowManualSliding;
 
 ### Visible Portion of the Front View Controller
 
-You can set the width of the visible portion of the front view controller that is seen when the sliding scroll view is all the way open. It defaults to 58 points, but you can change it with:
+You can set the width of the visible portion of the front view controller that is seen when the sliding scroll view is all the way open. It defaults to 58 points, but you can change it.
+
+**Important: Because JSSlidingViewController is based on a `<UIScrollView>` with `pagingEnabled` set to `YES`, scroll behavior will not work properly if visible portion is set to a width that is greater than half the width of the screen.** This is because UIScrollView automatically snaps to multiples of the view bounds on touchUp, i.e., if your visible portion is too wide, the scroll view is *always* closer to page index 0 than it is to page index 1.
 
 ```
 -(void)setWidthOfVisiblePortionOfFrontViewControllerWhenSliderIsOpen:
