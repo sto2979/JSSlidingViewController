@@ -1,6 +1,9 @@
 //
 //  JSSlidingViewController.h
+//  
 //
+//  Created by Jared Sinclair on 6/19/12.
+//  Copyright (c) 2014 Jared Sinclair. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
