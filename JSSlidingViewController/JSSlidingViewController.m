@@ -201,11 +201,15 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
         self.frontViewControllerDropShadow_right.hidden = YES;
     }
     
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:0.0];
+    [UIView setAnimationCurve: UIViewAnimationCurveLinear];
     _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
-    _slidingScrollView.frame = CGRectMake(targetOriginForSlidingScrollView, 0, frame.size.width, frame.size.height);
-    self.frontViewController.view.frame = CGRectMake(_sliderOpeningWidth, 0, frame.size.width, frame.size.height);
+    _slidingScrollView.frame = CGRectMake(targetOriginForSlidingScrollView, 0, frame.size.width - (_sliderOpeningWidth), frame.size.height);
+    self.frontViewController.view.frame = CGRectMake(_sliderOpeningWidth, 0, frame.size.width - (_sliderOpeningWidth), frame.size.height);
     self.invisibleCloseSliderButton.frame = CGRectMake(_sliderOpeningWidth, self.invisibleCloseSliderButton.frame.origin.y, _desiredVisiblePortionOfFrontViewWhenOpen, frame.size.height);
-    
+    [UIView commitAnimations];
     if (self.backViewController.view.superview == nil) {
         /*
          This code is what keeps the content size of the back view controller
@@ -502,7 +506,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
     NSAssert(viewController, @"JSSlidingViewController requires both a front and a back view controller");
     UIViewController *newFrontViewController = viewController;
     CGRect frame = self.view.bounds;
-    newFrontViewController.view.frame = CGRectMake(_sliderOpeningWidth, frame.origin.y, frame.size.width, frame.size.height);
+    newFrontViewController.view.frame = CGRectMake(_sliderOpeningWidth, frame.origin.y, frame.size.width - _sliderOpeningWidth, frame.size.height);
     newFrontViewController.view.alpha = 0.0f;
     [self addChildViewController:newFrontViewController];
     [_slidingScrollView addSubview:newFrontViewController.view];
