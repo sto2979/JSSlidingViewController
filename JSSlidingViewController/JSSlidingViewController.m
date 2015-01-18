@@ -419,7 +419,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
             _slidingScrollView.frame = rect;
         } completion:^(BOOL finished2) {
             if (self.invisibleCloseSliderButton == nil) {
-                [self addInvisibleButton];
+//                [self addInvisibleButton];
             }
             _slidingScrollView.contentOffset = CGPointMake(_sliderOpeningWidth, 0);
             _animating = NO;
@@ -446,7 +446,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
         _slidingScrollView.frame = rect;
     } completion:^(BOOL finished) {
         if (self.invisibleCloseSliderButton == nil) {
-            [self addInvisibleButton];
+//            [self addInvisibleButton];
         }
         _animating = NO;
         self.view.userInteractionEnabled = YES;
@@ -659,7 +659,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
             origin = [_slidingScrollView convertPoint:origin toView:self.view];
             if (origin.x >= _sliderOpeningWidth) {
                 if (self.invisibleCloseSliderButton == nil) {
-                    [self addInvisibleButton];
+//                    [self addInvisibleButton];
                 }
                 CGRect rect = _slidingScrollView.frame;
                 rect.origin.x = _sliderOpeningWidth;
@@ -687,7 +687,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
         origin = [_slidingScrollView convertPoint:origin toView:self.view];
         if ( (origin.x >= _sliderOpeningWidth) && (scrollView.dragging == NO) ){
             if (self.invisibleCloseSliderButton == nil) {
-                [self addInvisibleButton];
+//                [self addInvisibleButton];
             }
             CGRect rect = _slidingScrollView.frame;
             rect.origin.x = _sliderOpeningWidth;
@@ -744,7 +744,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     if (_isOpen == YES && _locked == NO) {
         if (self.invisibleCloseSliderButton == nil) {
-            [self addInvisibleButton];
+//            [self addInvisibleButton];
         }
         CGRect rect = _slidingScrollView.frame;
         rect.origin.x = _sliderOpeningWidth;
@@ -793,7 +793,7 @@ CGFloat     const JSSlidingViewControllerMotionEffectMinMaxRelativeValue    = 20
         _frontViewControllerHasOpenCloseNavigationBarButton = frontViewControllerHasOpenCloseNavigationBarButton;
         if (self.invisibleCloseSliderButton.superview) {
             [self removeInvisibleButton];
-            [self addInvisibleButton];
+//            [self addInvisibleButton];
         }
     }
 }
